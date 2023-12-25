@@ -1,0 +1,78 @@
+{
+    "name": "mani",
+    "publisher": "anweber",
+    "version": "1.0.0",
+    "description": "show mani Repositories",
+    "displayName": "mani",
+    "main": "dist/extension.js",
+    "browser": "dist/browser.js",
+    "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AnWeber/vscode-mani"
+    },
+    "bugs": {
+        "url": "https://github.com/AnWeber/vscode-mani/issues"
+    },
+    "qna": "https://github.com/AnWeber/vscode-mani/discussions",
+    "license": "MIT",
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "git",
+        "scm"
+    ],
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "extensionKind": [
+        "workspace"
+    ],
+    "capabilities": {
+        "virtualWorkspaces": true,
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    },
+    "contributes": {
+        "commands": [
+            {
+                "title": "Open Project Folder",
+                "command": "mani.openFolder",
+                "category": "mani",
+                "icon": "$(arrow-down)"
+            },
+            {
+                "title": "Open Project in Workspace",
+                "command": "mani.addWorkspaceFolder",
+                "category": "mani",
+                "icon": "$(arrow-down)"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run build && npm run build-web",
+        "build": "esbuild ./src/extension.ts --bundle --outdir=dist/ --minify --sourcemap --platform=node --external:vscode --format=cjs",
+        "start": "npm run build -- --watch",
+        "build-web": "esbuild ./src/extension.ts --bundle --outfile=dist/browser.js --sourcemap --platform=browser --format=cjs --external:vscode",
+        "watch-web": "npm run build-web -- --watch",
+        "lockfile-lint": "lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm --validate-checksum --validate-integrity",
+        "eslint": "eslint src --ext ts --fix",
+        "lint": "npm run lockfile-lint && npm run eslint"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.5",
+        "@types/vscode": "1.75.0",
+        "@typescript-eslint/eslint-plugin": "^6.15.0",
+        "@typescript-eslint/parser": "^6.15.0",
+        "esbuild": "^0.19.10",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "lockfile-lint": "^4.12.1",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "yaml": "^2.3.4"
+    }
+}

@@ -1,0 +1,17 @@
+---
+root: true
+parser: "@typescript-eslint/parser"
+env:
+  node: true
+globals:
+  BufferEncoding: false
+  NodeJS: false
+parserOptions:
+  ecmaVersion: 2023
+  sourceType: module
+plugins:
+  - "@typescript-eslint"
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - eslint-config-prettier
