@@ -48,7 +48,12 @@ function getImportUri(path: string, fileUri: Uri) {
   if (path.startsWith("~")) {
     return Uri.file(path.replace("~", homedir));
   }
-
+  if (path.startsWith("/")) {
+    return Uri.file(path);
+  }
+  if (/^[a-zA-Z]:\//gu.test(path)) {
+    return Uri.file(path);
+  }
   return Uri.joinPath(fileUri, "..", path);
 }
 
