@@ -1,4 +1,4 @@
-export interface ManiFile {
+export interface ManiYaml {
   /** Import projects/tasks/env/specs/themes/targets from other configs [optional] */
   import?: string[];
   /** List of Projects */
@@ -50,9 +50,4 @@ export interface Command {
   name?: string;
   cmd?: string;
   task?: string;
-}
-
-export interface Simple1 {
-  cmd: string;
-  desc: string;
 }

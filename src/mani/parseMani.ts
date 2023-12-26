@@ -3,56 +3,90 @@ import {
   iterateDirectoryTree,
   parseYaml,
 } from "../fileUtils";
-import { ManiFile, Project } from "./maniFile";
+import { ManiConfig, ManiTask } from "./maniConfig";
+import { ManiYaml } from "./maniYaml";
 import { Uri } from "vscode";
-
-export interface ManiConfig {
-  uri: Uri;
-  import?: Array<string>;
-  projects: Array<ManiProject>;
-}
-
-export interface ManiProject {
-  label: string;
-  description?: string;
-  uri: Uri;
-  project: Project;
-}
-
+import { homedir } from "os";
 async function getManiConfig(uri: Uri) {
-  const file = await parseYaml<ManiFile>(uri);
+  const file = await parseYaml<ManiYaml>(uri);
+
+  if (!file) {
+    return undefined;
+  }
 
   const maniConfig: ManiConfig = {
     uri,
     projects: [],
   };
 
+  parseManiProjects(file, maniConfig, uri);
+  parseManiTasks(file, maniConfig);
+
+  await parseImports(file, uri, maniConfig);
+
+  return maniConfig;
+}
+
+async function parseImports(
+  file: ManiYaml | undefined,
+  uri: Uri,
+  maniConfig: ManiConfig
+) {
+  if (file?.import) {
+    maniConfig.imports = (await Promise.all(
+      file.import.map(async (importFile) => {
+        const importConfig = await getManiConfig(getImportUri(importFile, uri));
+        if (!importConfig) {
+          return getManiConfig(Uri.file(importFile));
+        }
+        return importConfig;
+      })
+    )) as Array<ManiConfig>;
+  }
+}
+function getImportUri(path: string, fileUri: Uri) {
+  if (path.startsWith("~")) {
+    return Uri.file(path.replace("~", homedir));
+  }
+
+  return Uri.joinPath(fileUri, "..", path);
+}
+
+function parseManiProjects(
+  file: ManiYaml | undefined,
+  maniConfig: ManiConfig,
+  uri: Uri
+) {
   if (file?.projects) {
-    for (const [name, project] of Object.entries(file.projects)) {
+    for (const [label, project] of Object.entries(file.projects)) {
       maniConfig.projects.push({
-        label: name,
-        description: project.desc,
-        uri: Uri.joinPath(uri, "..", project?.path || name),
-        project,
+        label,
+        description: project.desc || project.tags?.join(", "),
+        detail: project.path,
+        uri: Uri.joinPath(uri, "..", project?.path || label),
+        raw: project,
+        tags: project.tags || [],
+        config: maniConfig,
       });
     }
   }
+}
 
-  if (maniConfig?.import) {
-    const importConfigs = await Promise.all(
-      maniConfig.import.map((importFile) =>
-        getManiConfig(Uri.joinPath(uri, "..", importFile))
-      )
-    );
+function parseManiTasks(file: ManiYaml | undefined, maniConfig: ManiConfig) {
+  if (file?.tasks) {
+    maniConfig.tasks = Object.entries(file.tasks).map(([label, task]) => {
+      const maniTask: ManiTask = {
+        label,
+      };
+      if (typeof task !== "string") {
+        maniTask.description = task.desc;
 
-    for (const config of importConfigs) {
-      if (config.projects) {
-        maniConfig.projects.push(...config.projects);
+        maniTask.detail =
+          task.cmd || task.commands?.map((cmd) => cmd.name).join(", ");
       }
-    }
+      return maniTask;
+    });
   }
-
-  return maniConfig;
 }
 
 export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
