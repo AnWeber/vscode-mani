@@ -4,14 +4,14 @@ import { ManiStore, ManiTask } from "../mani";
 import { errorHandler } from "../decorators";
 import { createTerminal } from "./createTerminal";
 
-export class RunTaskCommand extends BaseCommand {
+export class RunTaskCommand extends BaseCommand<ManiTask> {
   public constructor(private readonly maniStore: ManiStore) {
     super("mani.runTask");
   }
 
   @errorHandler()
-  protected async execute(): Promise<void> {
-    const task = await this.pickTasks();
+  protected async execute(t?: ManiTask): Promise<void> {
+    const task = t || (await this.pickTasks());
     if (task) {
       const terminal = createTerminal();
 

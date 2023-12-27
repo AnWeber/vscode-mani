@@ -110,7 +110,3 @@ export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
   }
   return undefined;
 }
-
-export async function writeManiYaml(maniYaml: ManiYaml) {
-  st;
-}

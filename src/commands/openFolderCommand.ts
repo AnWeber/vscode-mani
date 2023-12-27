@@ -1,13 +1,13 @@
 import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
 import { pickProject } from "./pickProject";
-import { ManiStore } from "../mani";
+import { ManiProject, ManiStore } from "../mani";
 import { errorHandler } from "../decorators";
 
-export class OpenFolderCommand extends BaseCommand {
+export class OpenFolderCommand extends BaseCommand<ManiProject> {
   @errorHandler()
-  protected async execute(): Promise<void> {
-    const project = await pickProject(this.maniStore);
+  protected async execute(p?: ManiProject): Promise<void> {
+    const project = p || (await pickProject(this.maniStore));
     if (project?.uri) {
       vscode.commands.executeCommand("vscode.openFolder", project.uri, true);
     }

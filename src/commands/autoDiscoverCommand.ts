@@ -1,6 +1,6 @@
 import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
-import { ManiStore, Project } from "../mani";
+import { ManiStore, ManiYaml, Project } from "../mani";
 import { errorHandler } from "../decorators";
 import { equalsPath, writeYaml } from "../utils";
 import { runShell } from "../utils";
@@ -14,11 +14,24 @@ export class AutoDiscoverCommand extends BaseCommand {
 
   @errorHandler()
   protected async execute(): Promise<void> {
+    let uri = await this.autoDiscover();
+
+    if (!uri) {
+      uri = await this.initConfig();
+    }
+
+    if (uri) {
+      const document = await vscode.workspace.openTextDocument(uri);
+      await vscode.window.showTextDocument(document);
+    }
+  }
+
+  private async autoDiscover(): Promise<vscode.Uri | undefined> {
     const config = await this.maniStore.getManiConfig();
     if (config?.uri) {
       const basePath = vscode.Uri.joinPath(config.uri, "..");
       const projects = await this.maniStore.getProjects();
-      const newProjects = await findGitProjects(basePath, (uri) =>
+      const newProjects = await this.findGitProjects(basePath, (uri) =>
         projects.every((project) => !equalsPath(uri, project.uri))
       );
 
@@ -30,45 +43,75 @@ export class AutoDiscoverCommand extends BaseCommand {
       };
 
       await writeYaml(config.uri, originalConfig);
-
-      const document = await vscode.workspace.openTextDocument(config.uri);
-      await vscode.window.showTextDocument(document);
+      return config.uri;
     }
+    return undefined;
   }
-}
 
-export async function findGitProjects(
-  basePath: vscode.Uri,
-  predicate?: (uri: vscode.Uri) => boolean
-): Promise<Record<string, Project>> {
-  const projects: Array<Project> = [];
-  const pattern = new vscode.RelativePattern(basePath, "**/.git/HEAD");
+  private async initConfig(): Promise<vscode.Uri | undefined> {
+    const uri = (
+      await vscode.window.showOpenDialog({
+        title: "Select root folder for projects",
+        canSelectFolders: true,
+        canSelectFiles: false,
+        canSelectMany: false,
+      })
+    )?.pop();
+    if (!uri) {
+      return undefined;
+    }
 
-  const files = await vscode.workspace.findFiles(pattern, null);
+    const projects = await this.findGitProjects(uri);
 
-  if (files.length > 0) {
-    const newFiles = files
-      .map((file) => vscode.Uri.joinPath(file, "..", ".."))
-      .filter((uri) => !predicate || predicate(uri));
+    const maniYaml: ManiYaml = {
+      projects,
+      tasks: {
+        pull: {
+          desc: "git pull",
+          cmd: `git pull`,
+        },
+      },
+    };
 
-    for (const uri of newFiles) {
-      const project: Project = {
-        path: `.${uri.fsPath.split(basePath.fsPath).pop()}`,
-      };
-      try {
-        project.url = await runShell("git config --get remote.origin.url", {
-          cwd: uri.fsPath,
-        });
-      } catch (err) {
-        logInfo(`${uri.fsPath} has no remote`);
+    const fileUri = vscode.Uri.joinPath(uri, "mani.yml");
+    await writeYaml(fileUri, maniYaml);
+
+    return uri;
+  }
+
+  private async findGitProjects(
+    basePath: vscode.Uri,
+    predicate?: (uri: vscode.Uri) => boolean
+  ): Promise<Record<string, Project>> {
+    const projects: Array<Project> = [];
+    const pattern = new vscode.RelativePattern(basePath, "**/.git/HEAD");
+
+    const files = await vscode.workspace.findFiles(pattern, null);
+
+    if (files.length > 0) {
+      const newFiles = files
+        .map((file) => vscode.Uri.joinPath(file, "..", ".."))
+        .filter((uri) => !predicate || predicate(uri));
+
+      for (const uri of newFiles) {
+        const project: Project = {
+          path: `.${uri.fsPath.split(basePath.fsPath).pop()}`,
+        };
+        try {
+          project.url = await runShell("git config --get remote.origin.url", {
+            cwd: uri.fsPath,
+          });
+        } catch (err) {
+          logInfo(`${uri.fsPath} has no remote`);
+        }
+        projects.push(project);
       }
-      projects.push(project);
     }
+    return projects.reduce((prev, curr) => {
+      if (curr.path) {
+        prev[basename(curr.path)] = curr;
+      }
+      return prev;
+    }, {} as Record<string, Project>);
   }
-  return projects.reduce((prev, curr) => {
-    if (curr.path) {
-      prev[basename(curr.path)] = curr;
-    }
-    return prev;
-  }, {} as Record<string, Project>);
 }

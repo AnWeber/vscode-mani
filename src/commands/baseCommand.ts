@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export abstract class BaseCommand implements vscode.Disposable {
+export abstract class BaseCommand<T = void> implements vscode.Disposable {
   private disposable: vscode.Disposable;
   constructor(command: string) {
     this.disposable = vscode.commands.registerCommand(
@@ -13,5 +13,5 @@ export abstract class BaseCommand implements vscode.Disposable {
     this.disposable.dispose();
   }
 
-  protected abstract execute(): Promise<void>;
+  protected abstract execute(...args: T[]): Promise<void>;
 }

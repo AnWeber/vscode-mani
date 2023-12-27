@@ -60,15 +60,48 @@
                 "shortTitle": "autodiscover",
                 "category": "mani",
                 "icon": "$(sync)"
-            },
-            {
-                "title": "Init mani Project",
-                "command": "mani.init",
-                "shortTitle": "init",
-                "category": "mani",
-                "icon": "$(new)"
             }
-        ]
+        ],
+        "viewsWelcome": [
+            {
+                "view": "maniProjects",
+                "contents": "Please init mani project"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "mani-views",
+                    "title": "mani",
+                    "icon": "icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "mani-views": [
+                {
+                    "id": "maniProjects",
+                    "name": "Projects",
+                    "visibility": "collapsed"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "mani.openFolder",
+                "key": "ctrl+alt+p",
+                "mac": "cmd+alt+p"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "mani.autodiscover",
+                    "when": "view == maniProjects",
+                    "group": "navigation"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run build && npm run build-web",
