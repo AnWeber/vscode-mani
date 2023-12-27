@@ -4,6 +4,7 @@ import { ManiYaml, Project } from "./maniYaml";
 export interface ManiConfig {
   uri: Uri;
   raw: ManiYaml;
+  path?: string;
 
   imports?: Array<ManiConfig>;
   projects: Array<ManiProject>;

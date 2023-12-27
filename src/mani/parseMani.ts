@@ -36,9 +36,12 @@ async function parseImports(
   if (file?.import) {
     maniConfig.imports = (await Promise.all(
       file.import.map(async (importFile) => {
-        const importConfig = await getManiConfig(getImportUri(importFile, uri));
+        let importConfig = await getManiConfig(getImportUri(importFile, uri));
         if (!importConfig) {
-          return getManiConfig(Uri.file(importFile));
+          importConfig = await getManiConfig(Uri.file(importFile));
+        }
+        if (importConfig) {
+          importConfig.path = importFile;
         }
         return importConfig;
       })

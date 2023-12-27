@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import {
   AddWorkspaceFolderCommand,
   AutoDiscoverCommand,
+  EditConfigCommand,
   OpenFolderCommand,
   RunTaskCommand,
 } from "./commands";
@@ -17,6 +18,7 @@ export function activate(context: vscode.ExtensionContext): void {
       initOutputChannel(),
       new AddWorkspaceFolderCommand(maniStore),
       new AutoDiscoverCommand(maniStore),
+      new EditConfigCommand(maniStore),
       new OpenFolderCommand(maniStore),
       new RunTaskCommand(maniStore),
       new ProjectTreeDataProvider(maniStore),

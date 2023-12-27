@@ -4,6 +4,7 @@ import { ManiStore } from "../mani";
 import { AllTreeItem } from "./allTreeItem";
 import { ProjectTreeItem } from "./projectTreeItem";
 import { TasksTreeItem, TaskTreeItem } from "./taskTreeItem";
+import { ConfigsTreeItem, ConfigTreeItem } from "./configTreeItem";
 
 export class ProjectTreeDataProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>, vscode.Disposable
@@ -34,6 +35,14 @@ export class ProjectTreeDataProvider
 
       return tasks.map((task) => new TaskTreeItem(task));
     }
+    if (element instanceof ConfigsTreeItem) {
+      const config = await this.maniStore.getManiConfig();
+      if (config) {
+        const configs = [config, ...(config?.imports || [])];
+        return configs.map((c) => new ConfigTreeItem(c));
+      }
+      return [];
+    }
     return this.getProjectTreeItems();
   }
 
@@ -42,6 +51,7 @@ export class ProjectTreeDataProvider
     const tags = await this.maniStore.getTags();
     rootItems.push(...tags.map((tag) => new TagTreeItem(tag)));
     rootItems.push(new TasksTreeItem());
+    rootItems.push(new ConfigsTreeItem());
     return rootItems;
   }
 

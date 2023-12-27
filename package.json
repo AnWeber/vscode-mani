@@ -60,6 +60,13 @@
                 "shortTitle": "autodiscover",
                 "category": "mani",
                 "icon": "$(sync)"
+            },
+            {
+                "title": "edit Mani Config",
+                "command": "mani.editConfig",
+                "shortTitle": "edit",
+                "category": "mani",
+                "icon": "$(edit)"
             }
         ],
         "viewsWelcome": [
