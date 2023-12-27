@@ -2,7 +2,7 @@ import {
   getCurrentFolder,
   iterateDirectoryTree,
   parseYaml,
-} from "../fileUtils";
+} from "../utils/fileUtils";
 import { ManiConfig, ManiTask } from "./maniConfig";
 import { ManiYaml } from "./maniYaml";
 import { Uri } from "vscode";
@@ -17,6 +17,7 @@ async function getManiConfig(uri: Uri) {
   const maniConfig: ManiConfig = {
     uri,
     projects: [],
+    raw: file,
   };
 
   parseManiProjects(file, maniConfig, uri);
@@ -108,4 +109,8 @@ export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
     return getManiConfig(manifile);
   }
   return undefined;
+}
+
+export async function writeManiYaml(maniYaml: ManiYaml) {
+  st;
 }

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { parse } from "yaml";
+import { parse, stringify } from "yaml";
 
 export async function parseYaml<T>(uri: vscode.Uri): Promise<T | undefined> {
   try {
@@ -8,6 +8,11 @@ export async function parseYaml<T>(uri: vscode.Uri): Promise<T | undefined> {
   } catch (err) {
     return undefined;
   }
+}
+
+export async function writeYaml<T>(uri: vscode.Uri, yaml: T): Promise<void> {
+  const content = stringify(yaml);
+  await vscode.workspace.fs.writeFile(uri, new TextEncoder().encode(content));
 }
 
 export async function readFile(uri: vscode.Uri): Promise<string> {
@@ -53,6 +58,32 @@ export async function iterateDirectoryTree(
   return undefined;
 }
 
-function equalsPath(uri1: vscode.Uri | undefined, uri2: vscode.Uri) {
+export function equalsPath(uri1: vscode.Uri | undefined, uri2: vscode.Uri) {
   return uri1?.toString() === uri2?.toString();
+}
+
+export async function findFiles(
+  uri: vscode.Uri,
+  exclude: Array<string>,
+  ...files: Array<string>
+): Promise<vscode.Uri | undefined> {
+  const dirFiles = await vscode.workspace.fs.readDirectory(uri);
+
+  if (dirFiles.some(([file]) => files.includes(file))) {
+    return uri;
+  }
+
+  for (const [file, type] of dirFiles) {
+    if (type === vscode.FileType.Directory) {
+      const childUri = await findFiles(
+        vscode.Uri.joinPath(uri, file),
+        exclude,
+        ...files
+      );
+      if (childUri) {
+        return childUri;
+      }
+    }
+  }
+  return undefined;
 }

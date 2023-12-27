@@ -1,14 +1,56 @@
 import { ManiConfig, ManiProject, ManiTask } from "./maniConfig";
 import { getRootManiConfig } from "./parseMani";
+import * as vscode from "vscode";
+import { watch } from "fs";
 
-export class ManiStore {
+export class ManiStore implements vscode.Disposable {
   private maniConfig: ManiConfig | undefined;
+  private abortController?: AbortController;
 
-  private async getManiConfig() {
+  public dispose() {
+    this.reset();
+  }
+
+  public reset(): void {
+    this.abortController?.abort();
+    delete this.abortController;
+    delete this.maniConfig;
+  }
+
+  public async getManiConfig() {
     if (!this.maniConfig) {
       this.maniConfig = await getRootManiConfig();
+      this.watchForConfigChanges();
     }
     return this.maniConfig;
+  }
+
+  private watchForConfigChanges() {
+    if (this.maniConfig) {
+      const onChange = () => {
+        this.abortController?.abort();
+        delete this.maniConfig;
+      };
+      this.abortController?.abort();
+      this.abortController = new AbortController();
+
+      watch(
+        this.maniConfig?.uri.fsPath,
+        {
+          signal: this.abortController.signal,
+        },
+        onChange
+      );
+      for (const config of this.maniConfig.imports || []) {
+        watch(
+          config?.uri.fsPath,
+          {
+            signal: this.abortController.signal,
+          },
+          onChange
+        );
+      }
+    }
   }
 
   public async getProjects(): Promise<Array<ManiProject>> {

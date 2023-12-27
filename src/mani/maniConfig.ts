@@ -1,8 +1,9 @@
 import { Uri } from "vscode";
-import { Project } from "./maniYaml";
+import { ManiYaml, Project } from "./maniYaml";
 
 export interface ManiConfig {
   uri: Uri;
+  raw: ManiYaml;
 
   imports?: Array<ManiConfig>;
   projects: Array<ManiProject>;

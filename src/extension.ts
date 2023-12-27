@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import {
   AddWorkspaceFolderCommand,
+  AutoDiscoverCommand,
+  InitCommand,
   OpenFolderCommand,
   RunTaskCommand,
 } from "./commands";
@@ -14,6 +16,8 @@ export function activate(context: vscode.ExtensionContext): void {
     ...[
       initOutputChannel(),
       new AddWorkspaceFolderCommand(maniStore),
+      new AutoDiscoverCommand(maniStore),
+      new InitCommand(maniStore),
       new OpenFolderCommand(maniStore),
       new RunTaskCommand(maniStore),
     ]

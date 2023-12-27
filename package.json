@@ -53,6 +53,20 @@
                 "command": "mani.runTask",
                 "category": "mani",
                 "icon": "$(play)"
+            },
+            {
+                "title": "Autodiscover Git Projects",
+                "command": "mani.autodiscover",
+                "shortTitle": "autodiscover",
+                "category": "mani",
+                "icon": "$(sync)"
+            },
+            {
+                "title": "Init mani Project",
+                "command": "mani.init",
+                "shortTitle": "init",
+                "category": "mani",
+                "icon": "$(new)"
             }
         ]
     },
