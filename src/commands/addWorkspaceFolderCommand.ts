@@ -1,6 +1,6 @@
 import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
-import { pickProject } from "./pickProject";
+import { pickProject } from "./openFolderCommand";
 import { ManiStore } from "../mani";
 import { errorHandler } from "../decorators";
 

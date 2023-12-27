@@ -1,6 +1,5 @@
 import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
-import { pickProject } from "./pickProject";
 import { ManiProject, ManiStore } from "../mani";
 import { errorHandler } from "../decorators";
 
@@ -15,4 +14,15 @@ export class OpenFolderCommand extends BaseCommand<ManiProject> {
   public constructor(private readonly maniStore: ManiStore) {
     super("mani.openFolder");
   }
+}
+export async function pickProject(
+  maniStore: ManiStore
+): Promise<ManiProject | undefined> {
+  const projects = await maniStore.getProjects();
+  const project = await vscode.window.showQuickPick(projects, {
+    matchOnDetail: true,
+    matchOnDescription: true,
+  });
+
+  return project;
 }
