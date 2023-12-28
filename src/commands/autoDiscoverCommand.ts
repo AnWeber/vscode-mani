@@ -9,7 +9,7 @@ import { basename } from "path";
 
 export class AutoDiscoverCommand extends BaseCommand {
   public constructor(private readonly maniStore: ManiStore) {
-    super("mani.autodiscover");
+    super("mani.autodiscover", "mani.init");
   }
 
   @errorHandler()
@@ -48,7 +48,7 @@ export class AutoDiscoverCommand extends BaseCommand {
     return undefined;
   }
 
-  private async initConfig(): Promise<vscode.Uri | undefined> {
+  protected async initConfig(): Promise<vscode.Uri | undefined> {
     const uri = (
       await vscode.window.showOpenDialog({
         title: "Select root folder for projects",

@@ -2,8 +2,8 @@
     "name": "mani",
     "publisher": "anweber",
     "version": "1.0.0",
-    "description": "show mani Repositories",
-    "displayName": "mani",
+    "description": "manage projects using mani",
+    "displayName": "mani - Project Manager",
     "main": "dist/extension.js",
     "icon": "icon.png",
     "repository": {
@@ -60,6 +60,13 @@
                 "shortTitle": "autodiscover",
                 "category": "mani",
                 "icon": "$(sync)"
+            },
+            {
+                "title": "Init Mani Project Manager",
+                "command": "mani.init",
+                "shortTitle": "init",
+                "category": "mani",
+                "icon": "$(new-file)"
             },
             {
                 "title": "edit Mani Config",
@@ -132,5 +139,8 @@
     },
     "dependencies": {
         "yaml": "^2.3.4"
+    },
+    "volta": {
+        "node": "20.10.0"
     }
 }
