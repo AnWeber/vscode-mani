@@ -76,12 +76,6 @@
                 "icon": "$(edit)"
             }
         ],
-        "viewsWelcome": [
-            {
-                "view": "maniProjects",
-                "contents": "Please init mani project"
-            }
-        ],
         "viewsContainers": {
             "activitybar": [
                 {
@@ -115,7 +109,19 @@
                     "group": "navigation"
                 }
             ]
-        }
+        },
+        "configuration": [
+            {
+                "title": "mani - Project Manager",
+                "properties": {
+                    "mani.openProjectsInNewFolder": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "open Projects in new Folder"
+                    }
+                }
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "npm run build && npm run build-web",

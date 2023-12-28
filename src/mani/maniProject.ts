@@ -1,5 +1,6 @@
 import { Uri, commands, workspace } from "vscode";
 import { Project } from "./maniYaml";
+import { getConfig } from "./config";
 
 export class ManiProject {
   public constructor(
@@ -21,7 +22,11 @@ export class ManiProject {
   }
 
   public openFolder(): void {
-    commands.executeCommand("vscode.openFolder", this.uri, true);
+    commands.executeCommand(
+      "vscode.openFolder",
+      this.uri,
+      getConfig().get("openProjectsInNewFolder")
+    );
   }
 
   public addToWorkspace(): void {
