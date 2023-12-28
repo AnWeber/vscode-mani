@@ -1,28 +1,68 @@
 import { Uri } from "vscode";
-import { ManiYaml, Project } from "./maniYaml";
+import { ManiYaml } from "./maniYaml";
+import { ManiProject } from "./maniProject";
+import { ManiTask } from "./maniTask";
 
-export interface ManiConfig {
-  uri: Uri;
-  raw: ManiYaml;
-  path?: string;
+export class ManiConfig {
+  public readonly projects: Array<ManiProject>;
+  public readonly tasks: Array<ManiTask>;
+  public path?: string;
+  public readonly imports: Array<ManiConfig> = [];
+  public constructor(public readonly uri: Uri, public readonly raw: ManiYaml) {
+    this.projects = this.parseProjects();
+    this.tasks = this.parseTasks();
+  }
 
-  imports?: Array<ManiConfig>;
-  projects: Array<ManiProject>;
-  tasks?: Array<ManiTask>;
-}
+  private parseProjects() {
+    const projects: Array<ManiProject> = [];
+    if (this.raw?.projects) {
+      for (const [name, project] of Object.entries(this.raw.projects)) {
+        projects.push(
+          new ManiProject(
+            name,
+            Uri.joinPath(this.uri, "..", project?.path || name),
+            project
+          )
+        );
+      }
+    }
+    return projects;
+  }
 
-export interface ManiProject {
-  label: string;
-  description?: string;
-  detail?: string;
-  uri: Uri;
-  raw: Project;
-  config: ManiConfig;
-  tags: Array<string>;
-}
+  private parseTasks(): Array<ManiTask> {
+    const tasks: Array<ManiTask> = [];
+    if (this.raw?.tasks) {
+      tasks.push(
+        ...Object.entries(this.raw.tasks).map(([name, task]) => {
+          return new ManiTask(name, task);
+        })
+      );
+    }
+    return tasks;
+  }
 
-export interface ManiTask {
-  label: string;
-  description?: string;
-  detail?: string;
+  public getAllProjects(): Array<ManiProject> {
+    return this.getArray((config) => config.projects).sort((p1, p2) =>
+      p1.label.localeCompare(p2.label)
+    );
+  }
+  public getAllTasks(): Array<ManiTask> {
+    return this.getArray((config) => config.tasks).sort((task1, task2) =>
+      task1.label.localeCompare(task2.label)
+    );
+  }
+
+  public getAllTags(): Array<string> {
+    return this.getArray((config) => config.projects.map((p) => p.tags).flat())
+      .filter((val, index, array) => array.indexOf(val) === index)
+      .sort();
+  }
+
+  private getArray<T>(getter: (config: ManiConfig) => Array<T>) {
+    const array: Array<T> = [];
+    array.push(...getter(this));
+    array.push(...this.imports.map((c) => getter(c)).flat());
+
+    return array;
+  }
 }

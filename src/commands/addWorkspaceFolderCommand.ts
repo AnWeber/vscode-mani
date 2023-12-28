@@ -1,21 +1,15 @@
 import { BaseCommand } from "./baseCommand";
-import * as vscode from "vscode";
 import { pickProject } from "./openFolderCommand";
 import { ManiStore } from "../mani";
 import { errorHandler } from "../decorators";
 
 export class AddWorkspaceFolderCommand extends BaseCommand {
+  public constructor(private readonly maniStore: ManiStore) {
+    super("mani.addWorkspaceFolder");
+  }
   @errorHandler()
   protected async execute(): Promise<void> {
     const project = await pickProject(this.maniStore);
-    if (project?.uri) {
-      vscode.workspace.updateWorkspaceFolders(0, 0, {
-        name: project.label,
-        uri: project.uri,
-      });
-    }
-  }
-  public constructor(private readonly maniStore: ManiStore) {
-    super("mani.addWorkspaceFolder");
+    project?.addToWorkspace();
   }
 }

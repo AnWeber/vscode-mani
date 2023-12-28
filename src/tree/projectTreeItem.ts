@@ -6,7 +6,7 @@ export class ProjectTreeItem extends vscode.TreeItem {
     super(project.label);
     this.iconPath = new vscode.ThemeIcon("repo");
 
-    this.description = project.description;
+    this.description = project.detail;
     this.command = {
       command: "mani.openFolder",
       arguments: [project],

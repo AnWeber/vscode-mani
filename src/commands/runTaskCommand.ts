@@ -2,7 +2,6 @@ import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
 import { ManiStore, ManiTask } from "../mani";
 import { errorHandler } from "../decorators";
-import { createTerminal } from "../utils";
 
 export class RunTaskCommand extends BaseCommand<ManiTask> {
   public constructor(private readonly maniStore: ManiStore) {
@@ -13,17 +12,16 @@ export class RunTaskCommand extends BaseCommand<ManiTask> {
   protected async execute(t?: ManiTask): Promise<void> {
     const task = t || (await this.pickTasks());
     if (task) {
-      const terminal = createTerminal();
-
-      terminal.sendText(`mani run ${task.label}`);
-
-      terminal.show(true);
+      await task.runInTerminal();
     }
   }
 
   private async pickTasks(): Promise<ManiTask | undefined> {
-    const tasks = await this.maniStore.getTasks();
-    const task = await vscode.window.showQuickPick(tasks, {
+    const config = await this.maniStore.getManiConfig();
+    if (!config) {
+      return;
+    }
+    const task = await vscode.window.showQuickPick(config.getAllTasks(), {
       matchOnDetail: true,
       matchOnDescription: true,
     });

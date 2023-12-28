@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { TagTreeItem } from "./tagTreeItem";
-import { ManiStore } from "../mani";
+import { ManiConfig, ManiStore } from "../mani";
 import { AllTreeItem } from "./allTreeItem";
 import { ProjectTreeItem } from "./projectTreeItem";
 import { TasksTreeItem, TaskTreeItem } from "./taskTreeItem";
@@ -27,36 +27,42 @@ export class ProjectTreeDataProvider
   public async getChildren(
     element?: vscode.TreeItem | undefined
   ): Promise<vscode.TreeItem[]> {
+    const config = await this.maniStore.getManiConfig();
+    if (!config) {
+      return [];
+    }
     if (!element) {
-      return await this.getRootItems();
+      return this.getRootItems(config);
     }
     if (element instanceof TasksTreeItem) {
-      const tasks = await this.maniStore.getTasks();
+      const tasks = config.getAllTasks();
 
       return tasks.map((task) => new TaskTreeItem(task));
     }
     if (element instanceof ConfigsTreeItem) {
-      const config = await this.maniStore.getManiConfig();
       if (config) {
         const configs = [config, ...(config?.imports || [])];
         return configs.map((c) => new ConfigTreeItem(c));
       }
       return [];
     }
-    return this.getProjectTreeItems();
+    return this.getProjectTreeItems(config, element);
   }
 
-  private async getRootItems() {
+  private getRootItems(config: ManiConfig) {
     const rootItems = [new AllTreeItem()];
-    const tags = await this.maniStore.getTags();
+    const tags = config.getAllTags();
     rootItems.push(...tags.map((tag) => new TagTreeItem(tag)));
     rootItems.push(new TasksTreeItem());
     rootItems.push(new ConfigsTreeItem());
     return rootItems;
   }
 
-  private async getProjectTreeItems(element?: vscode.TreeItem | undefined) {
-    const projects = await this.maniStore.getProjects();
+  private async getProjectTreeItems(
+    config: ManiConfig,
+    element?: vscode.TreeItem | undefined
+  ) {
+    const projects = config.getAllProjects();
     if (element instanceof TagTreeItem) {
       return projects
         .filter((obj) => obj.tags.includes(element.tag))

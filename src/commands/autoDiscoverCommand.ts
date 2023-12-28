@@ -30,7 +30,7 @@ export class AutoDiscoverCommand extends BaseCommand {
     const config = await this.maniStore.getManiConfig();
     if (config?.uri) {
       const basePath = vscode.Uri.joinPath(config.uri, "..");
-      const projects = await this.maniStore.getProjects();
+      const projects = config.getAllProjects();
       const newProjects = await this.findGitProjects(basePath, (uri) =>
         projects.every((project) => !equalsPath(uri, project.uri))
       );

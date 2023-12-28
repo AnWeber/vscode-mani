@@ -4,22 +4,23 @@ import { ManiProject, ManiStore } from "../mani";
 import { errorHandler } from "../decorators";
 
 export class OpenFolderCommand extends BaseCommand<ManiProject> {
+  public constructor(private readonly maniStore: ManiStore) {
+    super("mani.openFolder");
+  }
   @errorHandler()
   protected async execute(p?: ManiProject): Promise<void> {
     const project = p || (await pickProject(this.maniStore));
-    if (project?.uri) {
-      vscode.commands.executeCommand("vscode.openFolder", project.uri, true);
-    }
-  }
-  public constructor(private readonly maniStore: ManiStore) {
-    super("mani.openFolder");
+    project?.openFolder();
   }
 }
 export async function pickProject(
   maniStore: ManiStore
 ): Promise<ManiProject | undefined> {
-  const projects = await maniStore.getProjects();
-  const project = await vscode.window.showQuickPick(projects, {
+  const config = await maniStore.getManiConfig();
+  if (!config) {
+    return;
+  }
+  const project = await vscode.window.showQuickPick(config.getAllProjects(), {
     matchOnDetail: true,
     matchOnDescription: true,
   });
