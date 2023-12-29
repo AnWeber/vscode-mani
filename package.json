@@ -123,9 +123,16 @@
                     "group": "inline"
                 },
                 {
+                    "command": "mani.openFolder",
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
                     "command": "mani.addWorkspaceFolder",
-                    "when": "view == maniProjects && viewItem == project",
-                    "group": "inline"
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.addTags",
+                    "when": "view == maniProjects && viewItem == project"
                 }
             ]
         },

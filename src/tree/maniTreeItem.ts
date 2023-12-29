@@ -35,6 +35,10 @@ export const enumTreeItem = {
     name: "Branches",
     icon: "git-branch",
   },
+  NoTags: {
+    name: "<no-tags>",
+    icon: "tag",
+  },
 };
 
 export type ManiTreeItem =

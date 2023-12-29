@@ -52,7 +52,14 @@ export class ProjectTreeDataProvider
       return [config, ...(config?.imports || [])];
     }
     if (element === enumTreeItem.Tags) {
-      return config.getAllTags();
+      const tags: Array<ManiTreeItem> = config.getAllTags();
+      if (config.getAllProjects().some((p) => p.tags.length === 0)) {
+        tags.push(enumTreeItem.NoTags);
+      }
+      return tags;
+    }
+    if (element === enumTreeItem.NoTags) {
+      return config.getAllProjects().filter((p) => p.tags.length === 0);
     }
     if (element === enumTreeItem.All) {
       return config.getAllProjects();
