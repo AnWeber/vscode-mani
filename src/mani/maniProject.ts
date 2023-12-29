@@ -6,7 +6,8 @@ export class ManiProject {
   public constructor(
     public readonly name: string,
     public readonly uri: Uri,
-    public readonly raw: Project
+    public readonly raw: Project,
+    public readonly configPath: string | undefined
   ) {}
   public get label(): string {
     return this.name;

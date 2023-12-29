@@ -69,11 +69,18 @@
                 "icon": "$(new-file)"
             },
             {
-                "title": "edit Mani Config",
+                "title": "Edit Mani Config",
                 "command": "mani.editConfig",
                 "shortTitle": "edit",
                 "category": "mani",
                 "icon": "$(edit)"
+            },
+            {
+                "title": "Add Tags",
+                "command": "mani.addTags",
+                "shortTitle": "tag",
+                "category": "mani",
+                "icon": "$(tag)"
             }
         ],
         "viewsContainers": {
@@ -107,6 +114,18 @@
                     "command": "mani.autodiscover",
                     "when": "view == maniProjects",
                     "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "mani.addTags",
+                    "when": "view == maniProjects && viewItem == project",
+                    "group": "inline"
+                },
+                {
+                    "command": "mani.addWorkspaceFolder",
+                    "when": "view == maniProjects && viewItem == project",
+                    "group": "inline"
                 }
             ]
         },

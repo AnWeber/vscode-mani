@@ -1,13 +1,5 @@
 import * as vscode from "vscode";
 import { ManiTask } from "../mani";
-export class TasksTreeItem extends vscode.TreeItem {
-  constructor() {
-    super("Tasks");
-    this.iconPath = new vscode.ThemeIcon("tasklist");
-
-    this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-  }
-}
 
 export class TaskTreeItem extends vscode.TreeItem {
   constructor(task: ManiTask) {

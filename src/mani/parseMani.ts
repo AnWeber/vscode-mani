@@ -7,13 +7,13 @@ import { ManiConfig } from "./maniConfig";
 import { ManiYaml } from "./maniYaml";
 import { Uri } from "vscode";
 import { homedir } from "os";
-async function getManiConfig(uri: Uri) {
+async function getManiConfig(uri: Uri, path?: string) {
   const file = await parseYaml<ManiYaml>(uri);
 
   if (!file) {
     return undefined;
   }
-  const maniConfig = new ManiConfig(uri, file);
+  const maniConfig = new ManiConfig(uri, file, path);
   await parseImports(file, uri, maniConfig);
   return maniConfig;
 }
@@ -26,12 +26,12 @@ async function parseImports(
   if (file?.import) {
     const importConfigs = await Promise.all(
       file.import.map(async (importFile) => {
-        let importConfig = await getManiConfig(getImportUri(importFile, uri));
+        let importConfig = await getManiConfig(
+          getImportUri(importFile, uri),
+          importFile
+        );
         if (!importConfig) {
           importConfig = await getManiConfig(Uri.file(importFile));
-        }
-        if (importConfig) {
-          importConfig.path = importFile;
         }
         return importConfig;
       })

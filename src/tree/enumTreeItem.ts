@@ -1,9 +1,14 @@
 import * as vscode from "vscode";
+import { EnumTreeItemType } from "./maniTreeItem";
 
-export class AllTreeItem extends vscode.TreeItem {
-  constructor() {
-    super("All");
-    this.iconPath = new vscode.ThemeIcon("project");
+export class EnumTreeItem extends vscode.TreeItem {
+  constructor(val: EnumTreeItemType) {
+    super(val.name);
+
+    this.iconPath = new vscode.ThemeIcon(val.icon);
+    if (val.command) {
+      this.command = val.command;
+    }
     this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
   }
 }

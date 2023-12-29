@@ -1,3 +1,4 @@
+export * from "./addTagsCommand";
 export * from "./addWorkspaceFolderCommand";
 export * from "./autoDiscoverCommand";
 export * from "./baseCommand";

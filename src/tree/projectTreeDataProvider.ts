@@ -1,13 +1,14 @@
 import * as vscode from "vscode";
 import { TagTreeItem } from "./tagTreeItem";
-import { ManiConfig, ManiStore } from "../mani";
-import { AllTreeItem } from "./allTreeItem";
+import { ManiConfig, ManiProject, ManiStore, ManiTask } from "../mani";
+import { EnumTreeItem } from "./enumTreeItem";
 import { ProjectTreeItem } from "./projectTreeItem";
-import { TasksTreeItem, TaskTreeItem } from "./taskTreeItem";
-import { ConfigsTreeItem, ConfigTreeItem } from "./configTreeItem";
+import { TaskTreeItem } from "./taskTreeItem";
+import { ConfigTreeItem } from "./configTreeItem";
+import { ManiTreeItem, enumTreeItem } from "./maniTreeItem";
 
 export class ProjectTreeDataProvider
-  implements vscode.TreeDataProvider<vscode.TreeItem>, vscode.Disposable
+  implements vscode.TreeDataProvider<ManiTreeItem>, vscode.Disposable
 {
   private disposable: vscode.Disposable;
   public readonly onDidChangeTreeData: vscode.Event<void>;
@@ -25,54 +26,56 @@ export class ProjectTreeDataProvider
   }
 
   public async getChildren(
-    element?: vscode.TreeItem | undefined
-  ): Promise<vscode.TreeItem[]> {
+    element?: ManiTreeItem | undefined
+  ): Promise<Array<ManiTreeItem>> {
     const config = await this.maniStore.getManiConfig();
     if (!config) {
-      return [];
+      return [enumTreeItem.Init];
     }
     if (!element) {
-      return this.getRootItems(config);
+      return this.getRootItems();
     }
-    if (element instanceof TasksTreeItem) {
-      const tasks = config.getAllTasks();
-
-      return tasks.map((task) => new TaskTreeItem(task));
+    if (element === enumTreeItem.Tasks) {
+      return config.getAllTasks();
     }
-    if (element instanceof ConfigsTreeItem) {
-      if (config) {
-        const configs = [config, ...(config?.imports || [])];
-        return configs.map((c) => new ConfigTreeItem(c));
-      }
-      return [];
+    if (element === enumTreeItem.Configs) {
+      return [config, ...(config?.imports || [])];
     }
-    return this.getProjectTreeItems(config, element);
+    if (element === enumTreeItem.Tags) {
+      return config.getAllTags();
+    }
+    if (element === enumTreeItem.All) {
+      return config.getAllProjects();
+    }
+    if (typeof element === "string") {
+      return config.getAllProjects().filter((p) => p.tags.includes(element));
+    }
+    return [];
   }
 
-  private getRootItems(config: ManiConfig) {
-    const rootItems = [new AllTreeItem()];
-    const tags = config.getAllTags();
-    rootItems.push(...tags.map((tag) => new TagTreeItem(tag)));
-    rootItems.push(new TasksTreeItem());
-    rootItems.push(new ConfigsTreeItem());
-    return rootItems;
+  private getRootItems() {
+    return [
+      enumTreeItem.All,
+      enumTreeItem.Tags,
+      enumTreeItem.Branches,
+      enumTreeItem.Tasks,
+      enumTreeItem.Configs,
+    ];
   }
 
-  private async getProjectTreeItems(
-    config: ManiConfig,
-    element?: vscode.TreeItem | undefined
-  ) {
-    const projects = config.getAllProjects();
-    if (element instanceof TagTreeItem) {
-      return projects
-        .filter((obj) => obj.tags.includes(element.tag))
-        .map((project) => new ProjectTreeItem(project));
+  public async getTreeItem(element: ManiTreeItem): Promise<vscode.TreeItem> {
+    if (element instanceof ManiProject) {
+      return new ProjectTreeItem(element);
     }
-
-    return projects.map((project) => new ProjectTreeItem(project));
-  }
-
-  public async getTreeItem(element: TagTreeItem): Promise<vscode.TreeItem> {
-    return element;
+    if (element instanceof ManiTask) {
+      return new TaskTreeItem(element);
+    }
+    if (typeof element === "string") {
+      return new TagTreeItem(element);
+    }
+    if (element instanceof ManiConfig) {
+      return new ConfigTreeItem(element);
+    }
+    return new EnumTreeItem(element);
   }
 }

@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import {
+  AddTagsCommand,
   AddWorkspaceFolderCommand,
   AutoDiscoverCommand,
   EditConfigCommand,
@@ -16,6 +17,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     ...[
       initOutputChannel(),
+      new AddTagsCommand(maniStore),
       new AddWorkspaceFolderCommand(maniStore),
       new AutoDiscoverCommand(maniStore),
       new EditConfigCommand(maniStore),

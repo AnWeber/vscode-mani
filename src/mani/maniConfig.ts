@@ -6,9 +6,12 @@ import { ManiTask } from "./maniTask";
 export class ManiConfig {
   public readonly projects: Array<ManiProject>;
   public readonly tasks: Array<ManiTask>;
-  public path?: string;
   public readonly imports: Array<ManiConfig> = [];
-  public constructor(public readonly uri: Uri, public readonly raw: ManiYaml) {
+  public constructor(
+    public readonly uri: Uri,
+    public readonly raw: ManiYaml,
+    public readonly path: string | undefined
+  ) {
     this.projects = this.parseProjects();
     this.tasks = this.parseTasks();
   }
@@ -21,7 +24,8 @@ export class ManiConfig {
           new ManiProject(
             name,
             Uri.joinPath(this.uri, "..", project?.path || name),
-            project
+            project,
+            this.path
           )
         );
       }
