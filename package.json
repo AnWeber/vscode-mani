@@ -136,7 +136,46 @@
                     "mani.openProjectsInNewFolder": {
                         "type": "boolean",
                         "default": true,
-                        "description": "open Projects in new Folder"
+                        "description": "Open Projects in New Window"
+                    },
+                    "mani.visibleTreeItemRoots": {
+                        "title": "Visible Project Tree Item Roots",
+                        "type": "object",
+                        "properties": {
+                            "All": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "show All Projects Tree Item"
+                            },
+                            "Tags": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "show Tags Tree Item"
+                            },
+                            "Configs": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "show Configs Tree Item"
+                            },
+                            "Tasks": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "show Tasks Tree Item"
+                            },
+                            "Branches": {
+                                "type": "boolean",
+                                "default": false,
+                                "description": "show Git Branches Tree Item"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "default": {
+                            "All": true,
+                            "Tags": true,
+                            "Configs": true,
+                            "Tasks": true,
+                            "Branches": true
+                        }
                     }
                 }
             }

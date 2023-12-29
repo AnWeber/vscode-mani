@@ -12,7 +12,7 @@ export class ProjectTreeItem extends vscode.TreeItem {
     this.command = {
       command: "mani.openFolder",
       arguments: [project],
-      title: "open Folder",
+      title: "Open Folder",
     };
   }
 }

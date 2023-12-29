@@ -6,23 +6,33 @@ import { ProjectTreeItem } from "./projectTreeItem";
 import { TaskTreeItem } from "./taskTreeItem";
 import { ConfigTreeItem } from "./configTreeItem";
 import { ManiTreeItem, enumTreeItem } from "./maniTreeItem";
+import { getConfig } from "../mani/config";
 
 export class ProjectTreeDataProvider
   implements vscode.TreeDataProvider<ManiTreeItem>, vscode.Disposable
 {
-  private disposable: vscode.Disposable;
+  private readonly disposables: Array<vscode.Disposable>;
   public readonly onDidChangeTreeData: vscode.Event<void>;
 
   constructor(private readonly maniStore: ManiStore) {
-    this.onDidChangeTreeData = maniStore.maniConfigChanged;
+    const onDidChangeTreeDataEmitter = new vscode.EventEmitter<void>();
+    this.onDidChangeTreeData = onDidChangeTreeDataEmitter.event;
 
-    this.disposable = vscode.window.registerTreeDataProvider(
-      "maniProjects",
-      this
-    );
+    this.disposables = [
+      onDidChangeTreeDataEmitter,
+      maniStore.maniConfigChanged(() => {
+        onDidChangeTreeDataEmitter.fire();
+      }),
+      vscode.workspace.onDidChangeConfiguration((e) => {
+        if (e.affectsConfiguration("mani.visibleTreeItemRoots")) {
+          onDidChangeTreeDataEmitter.fire();
+        }
+      }),
+      vscode.window.registerTreeDataProvider("maniProjects", this),
+    ];
   }
   public dispose() {
-    this.disposable.dispose();
+    this.disposables.forEach((d) => d.dispose());
   }
 
   public async getChildren(
@@ -54,13 +64,24 @@ export class ProjectTreeDataProvider
   }
 
   private getRootItems() {
-    return [
-      enumTreeItem.All,
-      enumTreeItem.Tags,
-      enumTreeItem.Branches,
-      enumTreeItem.Tasks,
-      enumTreeItem.Configs,
-    ];
+    const children: Array<ManiTreeItem> = [];
+    const rootItems = getConfig().get("visibleTreeItemRoots");
+    if (rootItems?.All) {
+      children.push(enumTreeItem.All);
+    }
+    if (rootItems?.Tags) {
+      children.push(enumTreeItem.Tags);
+    }
+    if (rootItems?.Branches) {
+      children.push(enumTreeItem.Branches);
+    }
+    if (rootItems?.Tasks) {
+      children.push(enumTreeItem.Tasks);
+    }
+    if (rootItems?.Configs) {
+      children.push(enumTreeItem.Configs);
+    }
+    return children;
   }
 
   public async getTreeItem(element: ManiTreeItem): Promise<vscode.TreeItem> {

@@ -6,4 +6,13 @@ export function getConfig(): ManiConfiguration {
 
 export interface ManiConfiguration {
   get(section: "openProjectsInNewFolder"): boolean;
+  get(section: "visibleTreeItemRoots"):
+    | {
+        All: true;
+        Tags: true;
+        Configs: true;
+        Tasks: true;
+        Branches: true;
+      }
+    | undefined;
 }

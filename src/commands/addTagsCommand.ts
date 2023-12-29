@@ -29,7 +29,7 @@ export class AddTagsCommand extends BaseCommand<ManiProject> {
     config: ManiConfig,
     project: ManiProject
   ): Promise<Array<string> | undefined> {
-    const tagQuickPickItems: Array<vscode.QuickPickItem> = [
+    const tagQuickPickItems = [
       ...config.getAllTags().map((tag) => ({
         label: tag,
         picked: project.tags.includes(tag),
@@ -60,14 +60,12 @@ export class AddTagsCommand extends BaseCommand<ManiProject> {
             placeHolder: "Add New Tag",
           });
           if (newTag) {
-            tagQuickPickItems.push({
+            const newItem = {
               label: newTag,
               picked: true,
-            });
-            quickPick.items = tagQuickPickItems;
-            quickPick.selectedItems = tagQuickPickItems.filter(
-              (obj) => obj.picked
-            );
+            };
+            quickPick.items = [...quickPick.items, newItem];
+            quickPick.selectedItems = [...quickPick.selectedItems, newItem];
           }
           disposeOnHide = true;
           quickPick.show();
@@ -79,11 +77,7 @@ export class AddTagsCommand extends BaseCommand<ManiProject> {
           }
         }),
         quickPick.onDidAccept(() => {
-          resolve(
-            quickPick.selectedItems
-              .filter((obj) => obj.picked)
-              .map((obj) => obj.label)
-          );
+          resolve(quickPick.selectedItems.map((obj) => obj.label));
           disposables.forEach((d) => d.dispose());
         })
       );
