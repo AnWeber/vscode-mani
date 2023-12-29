@@ -3,6 +3,10 @@ import { ManiYaml } from "./maniYaml";
 import { ManiProject } from "./maniProject";
 import { ManiTask } from "./maniTask";
 
+export enum SpecialTag {
+  ICON = "icon:",
+}
+
 export class ManiConfig {
   public readonly projects: Array<ManiProject>;
   public readonly tasks: Array<ManiTask>;
@@ -58,6 +62,9 @@ export class ManiConfig {
 
   public getAllTags(): Array<string> {
     return this.getArray((config) => config.projects.map((p) => p.tags).flat())
+      .filter(
+        (tag) => !Object.keys(SpecialTag).some((st) => tag.startsWith(st))
+      )
       .filter((val, index, array) => array.indexOf(val) === index)
       .sort();
   }

@@ -5,3 +5,4 @@ export * from "./baseCommand";
 export * from "./editConfigCommand";
 export * from "./openFolderCommand";
 export * from "./runTaskCommand";
+export * from "./setIconCommand";

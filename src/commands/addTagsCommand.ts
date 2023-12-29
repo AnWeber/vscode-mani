@@ -21,7 +21,7 @@ export class AddTagsCommand extends BaseCommand<ManiProject> {
     }
     const tags = await this.pickTagsOfProject(config, project);
     if (tags) {
-      await this.writeTagsToYaml(project, tags, config);
+      await writeTagsToYaml(project, tags, config);
     }
   }
 
@@ -84,20 +84,18 @@ export class AddTagsCommand extends BaseCommand<ManiProject> {
       quickPick.show();
     });
   }
+}
 
-  private async writeTagsToYaml(
-    project: ManiProject,
-    tags: string[],
-    config: ManiConfig
-  ) {
-    project.raw.tags = tags;
+export async function writeTagsToYaml(
+  project: ManiProject,
+  tags: string[],
+  config: ManiConfig
+) {
+  project.raw.tags = tags;
 
-    let saveConfig: ManiConfig | undefined = config;
-    if (project.configPath) {
-      saveConfig = config.imports.find(
-        (obj) => obj.path === project.configPath
-      );
-    }
-    saveConfig && (await writeYaml(saveConfig.uri, saveConfig.raw));
+  let saveConfig: ManiConfig | undefined = config;
+  if (project.configPath) {
+    saveConfig = config.imports.find((obj) => obj.path === project.configPath);
   }
+  saveConfig && (await writeYaml(saveConfig.uri, saveConfig.raw));
 }

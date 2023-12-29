@@ -6,6 +6,7 @@ import {
   EditConfigCommand,
   OpenFolderCommand,
   RunTaskCommand,
+  SetIconCommand,
 } from "./commands";
 
 import { initOutputChannel } from "./initOutputChannel";
@@ -24,6 +25,7 @@ export function activate(context: vscode.ExtensionContext): void {
       new OpenFolderCommand(maniStore),
       new RunTaskCommand(maniStore),
       new ProjectTreeDataProvider(maniStore),
+      new SetIconCommand(maniStore),
     ]
   );
 }

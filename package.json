@@ -81,6 +81,13 @@
                 "shortTitle": "tag",
                 "category": "mani",
                 "icon": "$(tag)"
+            },
+            {
+                "title": "Set Icon",
+                "command": "mani.setIcon",
+                "shortTitle": "Icon",
+                "category": "mani",
+                "icon": "$(paintcan)"
             }
         ],
         "viewsContainers": {
@@ -132,6 +139,10 @@
                 },
                 {
                     "command": "mani.addTags",
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.setIcon",
                     "when": "view == maniProjects && viewItem == project"
                 }
             ]
