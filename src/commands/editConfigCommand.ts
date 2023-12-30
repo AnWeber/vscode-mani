@@ -10,7 +10,7 @@ export class EditConfigCommand extends BaseCommand<ManiConfig> {
   }
   @errorHandler()
   protected async execute(c?: ManiConfig): Promise<void> {
-    const config = c || (await this.pickConfig());
+    const config = c instanceof ManiConfig ? c : await this.pickConfig();
     if (config?.uri) {
       const document = await vscode.workspace.openTextDocument(config.uri);
       await vscode.window.showTextDocument(document);

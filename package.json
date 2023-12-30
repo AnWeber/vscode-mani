@@ -51,49 +51,48 @@
             {
                 "title": "Run Task",
                 "command": "mani.runTask",
-                "shortTitle": "run",
                 "category": "mani",
                 "icon": "$(play)"
             },
             {
                 "title": "Execute arbitrary commands",
                 "command": "mani.exec",
-                "shortTitle": "exec",
                 "category": "mani",
                 "icon": "$(play)"
             },
             {
                 "title": "Autodiscover Git Projects",
                 "command": "mani.autodiscover",
-                "shortTitle": "autodiscover",
                 "category": "mani",
                 "icon": "$(sync)"
             },
             {
                 "title": "Init Mani Project Manager",
                 "command": "mani.init",
-                "shortTitle": "init",
                 "category": "mani",
                 "icon": "$(new-file)"
             },
             {
                 "title": "Edit Mani Config",
                 "command": "mani.editConfig",
-                "shortTitle": "edit",
                 "category": "mani",
                 "icon": "$(edit)"
             },
             {
-                "title": "Add Tags",
+                "title": "Add Tags to Project",
                 "command": "mani.addTags",
-                "shortTitle": "tag",
+                "category": "mani",
+                "icon": "$(tag)"
+            },
+            {
+                "title": "Add Tag to Projects",
+                "command": "mani.addTagToProjects",
                 "category": "mani",
                 "icon": "$(tag)"
             },
             {
                 "title": "Set Icon",
                 "command": "mani.setIcon",
-                "shortTitle": "Icon",
                 "category": "mani",
                 "icon": "$(paintcan)"
             },
@@ -133,9 +132,25 @@
         "menus": {
             "view/title": [
                 {
-                    "command": "mani.autodiscover",
+                    "command": "mani.exec",
                     "when": "view == maniProjects",
                     "group": "navigation"
+                },
+                {
+                    "command": "mani.autodiscover",
+                    "when": "view == maniProjects"
+                },
+                {
+                    "command": "mani.addTagToProjects",
+                    "when": "view == maniProjects"
+                },
+                {
+                    "command": "mani.addTags",
+                    "when": "view == maniProjects"
+                },
+                {
+                    "command": "mani.editConfig",
+                    "when": "view == maniProjects"
                 }
             ],
             "view/item/context": [
@@ -167,6 +182,10 @@
                 {
                     "command": "mani.exec",
                     "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.addTagToProjects",
+                    "when": "view == maniProjects && viewItem == tag"
                 },
                 {
                     "command": "mani.exec",

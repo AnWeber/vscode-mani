@@ -15,7 +15,8 @@ export class AddTagsCommand extends BaseCommand<ManiProject> {
     if (!config) {
       return;
     }
-    const project = p || (await pickProject(this.maniStore));
+    const project =
+      p instanceof ManiProject ? p : await pickProject(this.maniStore);
     if (!(project instanceof ManiProject)) {
       return;
     }
@@ -92,10 +93,6 @@ export async function writeTagsToYaml(
   config: ManiConfig
 ) {
   project.raw.tags = tags;
-
-  let saveConfig: ManiConfig | undefined = config;
-  if (project.configPath) {
-    saveConfig = config.imports.find((obj) => obj.path === project.configPath);
-  }
+  const saveConfig = config.getConfigForProject(project);
   saveConfig && (await writeYaml(saveConfig.uri, saveConfig.raw));
 }

@@ -80,4 +80,12 @@ export class ManiConfig {
 
     return array;
   }
+
+  public getConfigForProject(p: ManiProject): ManiConfig | undefined {
+    if (p.configPath) {
+      return this.imports.find((c) => c.path === p.configPath);
+    } else {
+      return this;
+    }
+  }
 }
