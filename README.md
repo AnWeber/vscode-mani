@@ -20,7 +20,7 @@ Manage your local Projects using vscode and [mani](https://github.com/alajmo/man
 
 ## How to Setup
 
-If you already did use `mani`, you are ready to go. If not you need to create a `mani.yaml` using command `mani.init` in VSCode or using `mani init` in Shell. This commands let you select create a new mani.yaml.
+If you already did use `mani`, you are ready to go. If not you need to create a `mani.yaml` using command `mani.init` in VSCode or using `mani init` in Shell. This commands let you create a new mani.yaml.
 
 You also should install [mani](https://github.com/alajmo/mani?tab=readme-ov-file#installation) in a global path to use all Features.
 
