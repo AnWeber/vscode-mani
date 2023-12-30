@@ -11,8 +11,11 @@ parserOptions:
   sourceType: module
 plugins:
   - "@typescript-eslint"
+  - "simple-import-sort"
 rules:
   no-undef: error
+  simple-import-sort/imports: error
+  simple-import-sort/exports: error
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/recommended

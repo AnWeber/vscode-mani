@@ -261,13 +261,14 @@
         "lint": "npm run tsc && npm run lockfile-lint && npm run eslint"
     },
     "devDependencies": {
-        "@types/node": "^20.10.5",
+        "@types/node": "^20.10.6",
         "@types/vscode": "1.75.0",
         "@typescript-eslint/eslint-plugin": "^6.16.0",
         "@typescript-eslint/parser": "^6.16.0",
-        "esbuild": "^0.19.10",
+        "esbuild": "^0.19.11",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-simple-import-sort": "^10.0.0",
         "lockfile-lint": "^4.12.1",
         "typescript": "^5.3.3"
     },

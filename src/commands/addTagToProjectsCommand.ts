@@ -1,8 +1,9 @@
-import { BaseCommand } from "./baseCommand";
-import { ManiConfig, ManiStore } from "../mani";
-import { errorHandler } from "../decorators";
 import * as vscode from "vscode";
+
+import { errorHandler } from "../decorators";
+import { ManiConfig, ManiStore } from "../mani";
 import { writeYaml } from "../utils";
+import { BaseCommand } from "./baseCommand";
 
 export class AddTagToProjectsCommand extends BaseCommand<string> {
   public constructor(private readonly maniStore: ManiStore) {

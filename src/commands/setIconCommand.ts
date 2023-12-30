@@ -1,9 +1,10 @@
-import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
-import { ManiProject, ManiStore, SpecialTag } from "../mani";
+
 import { errorHandler } from "../decorators";
-import { pickProject } from "./openFolderCommand";
+import { ManiProject, ManiStore, SpecialTag } from "../mani";
 import { writeTagsToYaml } from "./addTagsCommand";
+import { BaseCommand } from "./baseCommand";
+import { pickProject } from "./openFolderCommand";
 
 export class SetIconCommand extends BaseCommand<ManiProject> {
   public constructor(private readonly maniStore: ManiStore) {

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import { EnumTreeItemType } from "./maniTreeItem";
 
 export class EnumTreeItem extends vscode.TreeItem {

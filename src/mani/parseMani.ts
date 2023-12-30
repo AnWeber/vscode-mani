@@ -1,3 +1,6 @@
+import { homedir } from "os";
+import { Uri } from "vscode";
+
 import {
   getCurrentFolder,
   iterateDirectoryTree,
@@ -5,8 +8,6 @@ import {
 } from "../utils/fileUtils";
 import { ManiConfig } from "./maniConfig";
 import { ManiYaml } from "./maniYaml";
-import { Uri } from "vscode";
-import { homedir } from "os";
 
 export const ManiConfigFiles = [
   "mani.yml",

@@ -1,4 +1,5 @@
 import { Command } from "vscode";
+
 import { ManiConfig, ManiProject, ManiTask } from "../mani";
 
 export type EnumTreeItemType = {

@@ -1,9 +1,10 @@
-import { BaseCommand } from "./baseCommand";
-import { ManiConfig, ManiProject, ManiStore } from "../mani";
-import { errorHandler } from "../decorators";
-import { pickProject } from "./openFolderCommand";
 import * as vscode from "vscode";
+
+import { errorHandler } from "../decorators";
+import { ManiConfig, ManiProject, ManiStore } from "../mani";
 import { writeYaml } from "../utils";
+import { BaseCommand } from "./baseCommand";
+import { pickProject } from "./openFolderCommand";
 
 export class AddTagsCommand extends BaseCommand<ManiProject> {
   public constructor(private readonly maniStore: ManiStore) {

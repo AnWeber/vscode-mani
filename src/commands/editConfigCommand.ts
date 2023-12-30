@@ -1,8 +1,9 @@
-import { BaseCommand } from "./baseCommand";
-import * as vscode from "vscode";
-import { ManiConfig, ManiStore } from "../mani";
-import { errorHandler } from "../decorators";
 import { basename } from "path";
+import * as vscode from "vscode";
+
+import { errorHandler } from "../decorators";
+import { ManiConfig, ManiStore } from "../mani";
+import { BaseCommand } from "./baseCommand";
 
 export class EditConfigCommand extends BaseCommand<ManiConfig> {
   public constructor(private readonly maniStore: ManiStore) {

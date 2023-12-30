@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 
-import schema from "./mani-schemas.json";
-import { ManiConfigFiles } from "../mani";
 import { logError } from "../initOutputChannel";
+import { ManiConfigFiles } from "../mani";
+import schema from "./mani-schemas.json";
 
 const SchemaName = "mani";
 

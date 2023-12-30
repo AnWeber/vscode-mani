@@ -1,4 +1,4 @@
-import { ExecOptions, exec } from "child_process";
+import { exec,ExecOptions } from "child_process";
 
 export async function runShell(
   command: string,

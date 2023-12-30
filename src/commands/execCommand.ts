@@ -1,9 +1,10 @@
-import { BaseCommand } from "./baseCommand";
-import { ManiConfig, ManiProject, ManiStore } from "../mani";
-import { errorHandler } from "../decorators";
 import * as vscode from "vscode";
+
+import { errorHandler } from "../decorators";
+import { ManiConfig, ManiProject, ManiStore } from "../mani";
 import { enumTreeItem } from "../tree";
 import { createTerminal } from "../utils";
+import { BaseCommand } from "./baseCommand";
 
 export type ManiArgs = ManiProject | string;
 

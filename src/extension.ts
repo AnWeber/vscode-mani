@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import {
   AddTagsCommand,
   AddTagToProjectsCommand,
@@ -11,11 +12,10 @@ import {
   RunTaskCommand,
   SetIconCommand,
 } from "./commands";
-
 import { initOutputChannel } from "./initOutputChannel";
 import { ManiStore } from "./mani";
-import { ProjectTreeDataProvider } from "./tree";
 import { registerManiSchemas } from "./schemas";
+import { ProjectTreeDataProvider } from "./tree";
 
 export async function activate(
   context: vscode.ExtensionContext

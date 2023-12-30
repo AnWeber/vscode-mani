@@ -1,7 +1,8 @@
 import { Uri } from "vscode";
-import { ManiYaml } from "./maniYaml";
+
 import { ManiProject } from "./maniProject";
 import { ManiTask } from "./maniTask";
+import { ManiYaml } from "./maniYaml";
 
 export enum SpecialTag {
   ICON = "icon:",

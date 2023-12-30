@@ -1,11 +1,12 @@
-import { BaseCommand } from "./baseCommand";
+import { basename } from "path";
 import * as vscode from "vscode";
-import { ManiStore, ManiYaml, Project } from "../mani";
+
 import { errorHandler } from "../decorators";
+import { logInfo } from "../initOutputChannel";
+import { ManiStore, ManiYaml, Project } from "../mani";
 import { equalsPath, writeYaml } from "../utils";
 import { runShell } from "../utils";
-import { logInfo } from "../initOutputChannel";
-import { basename } from "path";
+import { BaseCommand } from "./baseCommand";
 
 export class AutoDiscoverCommand extends BaseCommand {
   public constructor(private readonly maniStore: ManiStore) {

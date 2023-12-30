@@ -1,6 +1,7 @@
-import { Uri, commands, workspace } from "vscode";
-import { Project } from "./maniYaml";
+import { commands, Uri, workspace } from "vscode";
+
 import { getConfig } from "../utils";
+import { Project } from "./maniYaml";
 
 export class ManiProject {
   public constructor(

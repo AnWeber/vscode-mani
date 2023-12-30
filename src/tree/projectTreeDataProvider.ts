@@ -1,12 +1,13 @@
 import * as vscode from "vscode";
-import { TagTreeItem } from "./tagTreeItem";
+
 import { ManiConfig, ManiProject, ManiStore, ManiTask } from "../mani";
-import { EnumTreeItem } from "./enumTreeItem";
-import { ProjectTreeItem } from "./projectTreeItem";
-import { TaskTreeItem } from "./taskTreeItem";
-import { ConfigTreeItem } from "./configTreeItem";
-import { ManiTreeItem, enumTreeItem } from "./maniTreeItem";
 import { getConfig } from "../utils";
+import { ConfigTreeItem } from "./configTreeItem";
+import { EnumTreeItem } from "./enumTreeItem";
+import { enumTreeItem,ManiTreeItem } from "./maniTreeItem";
+import { ProjectTreeItem } from "./projectTreeItem";
+import { TagTreeItem } from "./tagTreeItem";
+import { TaskTreeItem } from "./taskTreeItem";
 
 export class ProjectTreeDataProvider
   implements vscode.TreeDataProvider<ManiTreeItem>, vscode.Disposable

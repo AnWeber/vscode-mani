@@ -1,7 +1,8 @@
+import { watch } from "fs";
+import * as vscode from "vscode";
+
 import { ManiConfig } from "./maniConfig";
 import { getRootManiConfig } from "./parseMani";
-import * as vscode from "vscode";
-import { watch } from "fs";
 
 export class ManiStore implements vscode.Disposable {
   private maniConfig: ManiConfig | undefined;

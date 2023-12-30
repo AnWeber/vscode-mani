@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import { ManiProject, SpecialTag } from "../mani";
 
 export class ProjectTreeItem extends vscode.TreeItem {

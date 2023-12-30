@@ -1,7 +1,7 @@
+import { errorHandler } from "../decorators";
+import { ManiProject, ManiStore } from "../mani";
 import { BaseCommand } from "./baseCommand";
 import { pickProject } from "./openFolderCommand";
-import { ManiProject, ManiStore } from "../mani";
-import { errorHandler } from "../decorators";
 
 export class AddWorkspaceFolderCommand extends BaseCommand<ManiProject> {
   public constructor(private readonly maniStore: ManiStore) {

@@ -1,6 +1,7 @@
-import * as vscode from "vscode";
-import { ManiConfig } from "../mani";
 import { basename } from "path";
+import * as vscode from "vscode";
+
+import { ManiConfig } from "../mani";
 
 export class ConfigTreeItem extends vscode.TreeItem {
   public constructor(config: ManiConfig) {

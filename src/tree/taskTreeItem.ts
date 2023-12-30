@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 import { ManiTask } from "../mani";
 
 export class TaskTreeItem extends vscode.TreeItem {

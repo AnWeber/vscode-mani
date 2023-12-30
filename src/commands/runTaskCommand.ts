@@ -1,7 +1,8 @@
-import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
-import { ManiStore, ManiTask } from "../mani";
+
 import { errorHandler } from "../decorators";
+import { ManiStore, ManiTask } from "../mani";
+import { BaseCommand } from "./baseCommand";
 
 export class RunTaskCommand extends BaseCommand<ManiTask> {
   public constructor(private readonly maniStore: ManiStore) {

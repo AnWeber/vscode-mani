@@ -1,7 +1,8 @@
-import { BaseCommand } from "./baseCommand";
 import * as vscode from "vscode";
-import { ManiProject, ManiStore } from "../mani";
+
 import { errorHandler } from "../decorators";
+import { ManiProject, ManiStore } from "../mani";
+import { BaseCommand } from "./baseCommand";
 
 export class OpenFolderCommand extends BaseCommand<ManiProject> {
   public constructor(private readonly maniStore: ManiStore) {

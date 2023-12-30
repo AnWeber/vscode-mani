@@ -1,5 +1,5 @@
-export * from "./addTagToProjectsCommand";
 export * from "./addTagsCommand";
+export * from "./addTagToProjectsCommand";
 export * from "./addWorkspaceFolderCommand";
 export * from "./autoDiscoverCommand";
 export * from "./baseCommand";
