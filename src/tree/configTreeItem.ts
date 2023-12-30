@@ -7,6 +7,7 @@ export class ConfigTreeItem extends vscode.TreeItem {
     super(config.path || basename(config.uri.fsPath));
     this.iconPath = new vscode.ThemeIcon("gear");
     this.description = config.uri.fsPath;
+    this.contextValue = "config";
     this.command = {
       command: "mani.editConfig",
       arguments: [config],

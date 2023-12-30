@@ -2,13 +2,13 @@ import { Command } from "vscode";
 import { ManiConfig, ManiProject, ManiTask } from "../mani";
 
 export type EnumTreeItemType = {
-  name: string;
+  label: string;
   icon: string;
   command?: Command;
 };
 export const enumTreeItem = {
   Init: {
-    name: "Please Initialize Mani Config",
+    label: "Please Initialize Mani Config",
     icon: "new-file",
     command: {
       command: "mani.init",
@@ -16,27 +16,31 @@ export const enumTreeItem = {
     },
   },
   All: {
-    name: "All",
+    label: "All",
+    icon: "project",
+  },
+  Projects: {
+    label: "Projects",
     icon: "project",
   },
   Tags: {
-    name: "Tags",
+    label: "Tags",
     icon: "tag",
   },
   Configs: {
-    name: "Config",
+    label: "Config",
     icon: "gear",
   },
   Tasks: {
-    name: "Tasks",
+    label: "Tasks",
     icon: "tasklist",
   },
   Branches: {
-    name: "Branches",
+    label: "Branches",
     icon: "git-branch",
   },
   NoTags: {
-    name: "<no-tags>",
+    label: "<no-tags>",
     icon: "tag",
   },
 };

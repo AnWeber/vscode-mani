@@ -6,6 +6,7 @@ export class TaskTreeItem extends vscode.TreeItem {
     super(task.label);
     this.iconPath = new vscode.ThemeIcon("play");
     this.description = task.description;
+    this.contextValue = "task";
     this.command = {
       command: "mani.runTask",
       arguments: [task],

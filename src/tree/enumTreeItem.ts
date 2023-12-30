@@ -3,7 +3,7 @@ import { EnumTreeItemType } from "./maniTreeItem";
 
 export class EnumTreeItem extends vscode.TreeItem {
   constructor(val: EnumTreeItemType) {
-    super(val.name);
+    super(val.label);
 
     this.iconPath = new vscode.ThemeIcon(val.icon);
     if (val.command) {

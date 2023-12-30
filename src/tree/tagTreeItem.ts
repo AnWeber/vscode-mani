@@ -6,6 +6,7 @@ export class TagTreeItem extends vscode.TreeItem {
     super(tag);
     this.tag = tag;
     this.iconPath = new vscode.ThemeIcon("tag");
+    this.contextValue = "tag";
 
     this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
   }

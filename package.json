@@ -51,6 +51,14 @@
             {
                 "title": "Run Task",
                 "command": "mani.runTask",
+                "shortTitle": "run",
+                "category": "mani",
+                "icon": "$(play)"
+            },
+            {
+                "title": "Execute arbitrary commands",
+                "command": "mani.exec",
+                "shortTitle": "exec",
                 "category": "mani",
                 "icon": "$(play)"
             },
@@ -155,6 +163,14 @@
                 {
                     "command": "mani.setIcon",
                     "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.exec",
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.exec",
+                    "when": "view == maniProjects && viewItem == tag"
                 }
             ]
         },
