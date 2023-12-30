@@ -19,8 +19,11 @@
         "Other"
     ],
     "keywords": [
-        "git",
-        "scm"
+        "mani",
+        "project",
+        "workspace",
+        "repository",
+        "manage"
     ],
     "engines": {
         "vscode": "^1.75.0"
