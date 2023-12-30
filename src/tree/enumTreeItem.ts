@@ -8,8 +8,9 @@ export class EnumTreeItem extends vscode.TreeItem {
     this.iconPath = new vscode.ThemeIcon(val.icon);
     if (val.command) {
       this.command = val.command;
+    } else {
+      this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
     }
-    this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
   }
 }
 

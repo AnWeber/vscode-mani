@@ -21,17 +21,16 @@ export async function readFile(uri: vscode.Uri): Promise<string> {
 }
 
 export function getCurrentFolder() {
-  const fileUri = vscode.window.activeTextEditor?.document?.uri;
-  if (fileUri) {
-    return vscode.Uri.joinPath(fileUri, "..");
-  }
   if (
     vscode.workspace.workspaceFolders &&
     vscode.workspace.workspaceFolders.length > 0
   ) {
     return vscode.workspace.workspaceFolders[0].uri;
   }
-
+  const fileUri = vscode.window.activeTextEditor?.document?.uri;
+  if (fileUri) {
+    return vscode.Uri.joinPath(fileUri, "..");
+  }
   return undefined;
 }
 

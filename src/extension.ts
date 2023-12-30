@@ -15,9 +15,13 @@ import {
 import { initOutputChannel } from "./initOutputChannel";
 import { ManiStore } from "./mani";
 import { ProjectTreeDataProvider } from "./tree";
+import { registerManiSchemas } from "./schemas";
 
-export function activate(context: vscode.ExtensionContext): void {
+export async function activate(
+  context: vscode.ExtensionContext
+): Promise<void> {
   const maniStore = new ManiStore();
+
   context.subscriptions.push(
     ...[
       initOutputChannel(),
@@ -34,4 +38,6 @@ export function activate(context: vscode.ExtensionContext): void {
       new SetIconCommand(maniStore),
     ]
   );
+
+  await registerManiSchemas();
 }

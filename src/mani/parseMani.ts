@@ -7,6 +7,14 @@ import { ManiConfig } from "./maniConfig";
 import { ManiYaml } from "./maniYaml";
 import { Uri } from "vscode";
 import { homedir } from "os";
+
+export const ManiConfigFiles = [
+  "mani.yml",
+  "mani.yaml",
+  ".mani.yaml",
+  ".mani.yml",
+];
+
 async function getManiConfig(uri: Uri, path?: string) {
   const file = await parseYaml<ManiYaml>(uri);
 
@@ -59,10 +67,7 @@ export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
 
   const manifile = await iterateDirectoryTree(
     currentFolder,
-    "mani.yml",
-    "mani.yaml",
-    ".mani.yaml",
-    ".mani.yml"
+    ...ManiConfigFiles
   );
   if (manifile) {
     return getManiConfig(manifile);

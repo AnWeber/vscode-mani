@@ -1,0 +1,483 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ManiYaml",
+  "definitions": {
+    "ManiYaml": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "import": {
+          "type": "array",
+          "description": "Import projects/tasks/env/specs/themes/targets from other configs",
+          "items": {
+            "type": "string"
+          }
+        },
+        "projects": {
+          "type": "object",
+          "description": "projects are directories, which may be git repositories, in which case they have an URL attribute",
+          "additionalProperties": {
+            "$ref": "#/definitions/Project"
+          }
+        },
+        "env": {
+          "description": "List of environment variables that are available to all tasks",
+          "$ref": "#/definitions/Environment"
+        },
+        "shell": {
+          "description": "Shell used for commands",
+          "type": "string"
+        },
+        "sync_remotes": {
+          "type": "boolean",
+          "description": "If this is set to true mani will override the url of any existing remote",
+          "default": false
+        },
+        "targets": {
+          "type": "object",
+          "description": "targets are configs that provide shorthand filtering of projects when executing",
+          "additionalProperties": {
+            "$ref": "#/definitions/Target"
+          }
+        },
+        "specs": {
+          "type": "object",
+          "description": "specs are configs that alter task execution and output",
+          "additionalProperties": {
+            "$ref": "#/definitions/Spec"
+          }
+        },
+        "tasks": {
+          "type": "object",
+          "description": "tasks are shell commands that you write and then run for selected projects",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Task"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "themes": {
+          "type": "object",
+          "description": "themes are used to modify the output of mani commands",
+          "additionalProperties": {
+            "$ref": "#/definitions/Theme"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Project": {
+      "type": "object",
+      "description": "project is a directory, which may be a git repository, in which case they have an URL attribute",
+      "properties": {
+        "path": {
+          "description": "Project path relative to the config file. Defaults to project name",
+          "type": "string"
+        },
+        "url": {
+          "description": "Project URL",
+          "type": "string"
+        },
+        "desc": {
+          "description": "Project description",
+          "type": "string"
+        },
+        "clone": {
+          "description": "Override clone command [defaults to \"git clone URL PATH\"]",
+          "type": "string"
+        },
+        "tags": {
+          "description": "List of tags",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sync": {
+          "description": "If project should be synced when running mani sync",
+          "type": "boolean"
+        },
+        "remotes": {
+          "description": "List of remotes, the key is the name and value is the url",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "env": {
+          "description": "List of project specific environment variables",
+          "$ref": "#/definitions/Environment"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Environment": {
+      "type": "object",
+      "description": "List of project specific environment variables (supports Shell command substitution)",
+      "additionalProperties": {}
+    },
+    "Spec": {
+      "type": "object",
+      "properties": {
+        "output": {
+          "description": "The preferred output format for a task",
+          "type": "string",
+          "enum": [
+            "text",
+            "table",
+            "html",
+            "markdown"
+          ]
+        },
+        "parallel": {
+          "description": "Option to run tasks in parallel",
+          "type": "boolean"
+        },
+        "ignore_errors": {
+          "description": "If ignore_errors is set to true and multiple commands are set for a task, then the exit code is not 0",
+          "type": "boolean"
+        },
+        "omit_empty": {
+          "description": "If command(s) in result in an empty output, the project row will be hidden",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Target": {
+      "type": "object",
+      "properties": {
+        "all": {
+          "description": "Target all projects",
+          "type": "boolean"
+        },
+        "cwd": {
+          "description": "Target current working directory project",
+          "type": "boolean"
+        },
+        "projects": {
+          "description": "Specify projects via project name",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "paths": {
+          "description": "Specify projects via project path",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "description": "Specify projects via project tags",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "desc": {
+          "description": "Task description",
+          "type": "string"
+        },
+        "theme": {
+          "description": "Specify theme",
+          "type": "string"
+        },
+        "shell": {
+          "description": "Shell used for this command",
+          "type": "string"
+        },
+        "env": {
+          "description": "List of environment variables",
+          "$ref": "#/definitions/Environment"
+        },
+        "spec": {
+          "description": "Spec reference Or specify spec inline",
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/Spec"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "target": {
+          "description": "Target reference Or specify targets inline",
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/Target"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "cmd": {
+          "description": "Multine command",
+          "type": "string"
+        },
+        "commands": {
+          "description": "List of commands",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Command"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Command": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name",
+          "type": "string"
+        },
+        "cmd": {
+          "description": "Basic command",
+          "type": "string"
+        },
+        "task": {
+          "description": "Reference another task",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Theme": {
+      "type": "object",
+      "description": "List of themes",
+      "properties": {
+        "tree": {
+          "type": "object",
+          "description": "Tree Options",
+          "properties": {
+            "style": {
+              "type": "string",
+              "description": "Tree style",
+              "enum": [
+                "light",
+                "bold",
+                "double",
+                "rounded",
+                "ascii",
+                "bullet-square",
+                "bullet-circle",
+                "bullet-star"
+              ]
+            }
+          }
+        },
+        "text": {
+          "type": "object",
+          "description": "Text options",
+          "properties": {
+            "prefix": {
+              "description": "Include project name prefix for each line",
+              "type": "boolean"
+            },
+            "prefix_colors": {
+              "type": "array",
+              "description": "Colors to alternate between for each project prefix",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "green",
+                  "blue",
+                  "red",
+                  "yellow",
+                  "magenta",
+                  "cyan"
+                ]
+              }
+            },
+            "header": {
+              "description": "Add a header before each project",
+              "type": "boolean"
+            },
+            "header_prefix": {
+              "description": "String value that appears before the project name in the header",
+              "type": "string"
+            },
+            "header_char": {
+              "description": "Fill remaining spaces with a character after the prefix",
+              "type": "string"
+            }
+          }
+        },
+        "table": {
+          "type": "object",
+          "description": "Table options",
+          "properties": {
+            "style": {
+              "description": "Table style",
+              "type": "string",
+              "enum": [
+                "light",
+                "bold",
+                "double",
+                "rounded",
+                "ascii"
+              ]
+            },
+            "format": {
+              "description": "Text format options for headers and rows in table output",
+              "type": "object",
+              "properties": {
+                "header": {
+                  "type": "string",
+                  "enum": [
+                    "default",
+                    "lower",
+                    "title",
+                    "upper"
+                  ]
+                },
+                "row": {
+                  "type": "string",
+                  "enum": [
+                    "default",
+                    "lower",
+                    "title",
+                    "upper"
+                  ]
+                }
+              }
+            },
+            "options": {
+              "description": "Border options for table output",
+              "type": "object",
+              "properties": {
+                "draw_border": {
+                  "type": "boolean"
+                },
+                "separate_columns": {
+                  "type": "boolean"
+                },
+                "separate_header": {
+                  "type": "boolean"
+                },
+                "separate_rows": {
+                  "type": "boolean"
+                },
+                "separate_footer": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "color": {
+              "description": "Color, attr and align options",
+              "type": "object",
+              "properties": {
+                "header": {
+                  "$ref": "#/definitions/TableColorEntry"
+                },
+                "row": {
+                  "$ref": "#/definitions/TableColorEntry"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "TableColorEntry": {
+      "type": "object",
+      "description": "List of themes",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "tag": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "desc": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "task": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "rel_path": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "path": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "url": {
+          "$ref": "#/definitions/TableColor"
+        },
+        "output": {
+          "$ref": "#/definitions/TableColor"
+        }
+      }
+    },
+    "TableColor": {
+      "type": "object",
+      "description": "List of themes",
+      "properties": {
+        "fg": {
+          "type": "string",
+          "enum": [
+            "green",
+            "blue",
+            "red",
+            "yellow",
+            "magenta",
+            "cyan"
+          ]
+        },
+        "bg": {
+          "type": "string",
+          "enum": [
+            "green",
+            "blue",
+            "red",
+            "yellow",
+            "magenta",
+            "cyan"
+          ]
+        },
+        "align": {
+          "type": "string",
+          "enum": [
+            "left",
+            "center",
+            "justify",
+            "right"
+          ]
+        },
+        "attr": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "bold",
+            "faint",
+            "italic",
+            "underline",
+            "crossed_out"
+          ]
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
