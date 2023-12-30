@@ -88,6 +88,13 @@
                 "shortTitle": "Icon",
                 "category": "mani",
                 "icon": "$(paintcan)"
+            },
+            {
+                "title": "Open Terminal",
+                "command": "mani.openTerminal",
+                "shortTitle": "Terminal",
+                "category": "mani",
+                "icon": "$(terminal)"
             }
         ],
         "viewsContainers": {
@@ -125,7 +132,7 @@
             ],
             "view/item/context": [
                 {
-                    "command": "mani.addTags",
+                    "command": "mani.openTerminal",
                     "when": "view == maniProjects && viewItem == project",
                     "group": "inline"
                 },
@@ -135,6 +142,10 @@
                 },
                 {
                     "command": "mani.addWorkspaceFolder",
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.openTerminal",
                     "when": "view == maniProjects && viewItem == project"
                 },
                 {

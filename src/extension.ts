@@ -5,6 +5,7 @@ import {
   AutoDiscoverCommand,
   EditConfigCommand,
   OpenFolderCommand,
+  OpenTerminalCommand,
   RunTaskCommand,
   SetIconCommand,
 } from "./commands";
@@ -23,6 +24,7 @@ export function activate(context: vscode.ExtensionContext): void {
       new AutoDiscoverCommand(maniStore),
       new EditConfigCommand(maniStore),
       new OpenFolderCommand(maniStore),
+      new OpenTerminalCommand(maniStore),
       new RunTaskCommand(maniStore),
       new ProjectTreeDataProvider(maniStore),
       new SetIconCommand(maniStore),
