@@ -62,11 +62,15 @@ export class ManiConfig {
 
   public getAllTags(): Array<string> {
     return this.getArray((config) => config.projects.map((p) => p.tags).flat())
-      .filter(
-        (tag) => !Object.keys(SpecialTag).some((st) => tag.startsWith(st))
-      )
       .filter((val, index, array) => array.indexOf(val) === index)
+
       .sort();
+  }
+
+  public getAllUserTags(): Array<string> {
+    return this.getAllTags().filter((tag) =>
+      Object.values(SpecialTag).every((st) => !tag.startsWith(st))
+    );
   }
 
   private getArray<T>(getter: (config: ManiConfig) => Array<T>) {

@@ -6,7 +6,7 @@ import { ProjectTreeItem } from "./projectTreeItem";
 import { TaskTreeItem } from "./taskTreeItem";
 import { ConfigTreeItem } from "./configTreeItem";
 import { ManiTreeItem, enumTreeItem } from "./maniTreeItem";
-import { getConfig } from "../mani/config";
+import { getConfig } from "../utils";
 
 export class ProjectTreeDataProvider
   implements vscode.TreeDataProvider<ManiTreeItem>, vscode.Disposable
@@ -52,7 +52,7 @@ export class ProjectTreeDataProvider
       return [config, ...(config?.imports || [])];
     }
     if (element === enumTreeItem.Tags) {
-      const tags: Array<ManiTreeItem> = config.getAllTags();
+      const tags: Array<ManiTreeItem> = config.getAllUserTags();
       if (config.getAllProjects().some((p) => p.tags.length === 0)) {
         tags.push(enumTreeItem.NoTags);
       }

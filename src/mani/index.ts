@@ -1,4 +1,3 @@
-export * from "./config";
 export * from "./maniConfig";
 export * from "./maniProject";
 export * from "./maniStore";
