@@ -11,6 +11,7 @@ export class ManiProject {
     public readonly raw: Project,
     public readonly configPath: string | undefined
   ) {}
+
   public get label(): string {
     return this.name;
   }

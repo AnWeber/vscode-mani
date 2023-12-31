@@ -1,9 +1,11 @@
 import * as vscode from "vscode";
 
+import { GitBranch, GitStore } from "../git";
 import { ManiConfig, ManiProject, ManiStore, ManiTask } from "../mani";
 import { getConfig } from "../utils";
 import { ConfigTreeItem } from "./configTreeItem";
 import { EnumTreeItem } from "./enumTreeItem";
+import { GitBranchTreeItem } from "./gitBranchTreeItem";
 import { enumTreeItem, ManiTreeItem } from "./maniTreeItem";
 import { ProjectTreeItem } from "./projectTreeItem";
 import { TagTreeItem } from "./tagTreeItem";
@@ -15,7 +17,10 @@ export class ProjectTreeDataProvider
   private readonly disposables: Array<vscode.Disposable>;
   public readonly onDidChangeTreeData: vscode.Event<void>;
 
-  constructor(private readonly maniStore: ManiStore) {
+  constructor(
+    private readonly maniStore: ManiStore,
+    private readonly gitStore: GitStore
+  ) {
     const onDidChangeTreeDataEmitter = new vscode.EventEmitter<void>();
     this.onDidChangeTreeData = onDidChangeTreeDataEmitter.event;
 
@@ -53,7 +58,10 @@ export class ProjectTreeDataProvider
       return [config, ...(config?.imports || [])];
     }
     if (element === enumTreeItem.Tags) {
-      const tags: Array<ManiTreeItem> = config.getAllUserTags();
+      const hideTags = getConfig().get("hideTags");
+      const tags: Array<ManiTreeItem> = config
+        .getAllUserTags()
+        .filter((t) => !hideTags?.includes(t));
       if (config.getAllProjects().some((p) => p.tags.length === 0)) {
         tags.push(enumTreeItem.NoTags);
       }
@@ -64,6 +72,14 @@ export class ProjectTreeDataProvider
     }
     if (element === enumTreeItem.All) {
       return config.getAllProjects();
+    }
+    if (element === enumTreeItem.Branches) {
+      const branches = await this.gitStore.getBranches();
+      const hideBranches = getConfig().get("hideBranches");
+      return branches.filter((b) => !hideBranches?.includes(b.name));
+    }
+    if (element instanceof GitBranch) {
+      return element.projects;
     }
     if (element instanceof ManiConfig) {
       return element.projects;
@@ -107,6 +123,9 @@ export class ProjectTreeDataProvider
     }
     if (element instanceof ManiConfig) {
       return new ConfigTreeItem(element);
+    }
+    if (element instanceof GitBranch) {
+      return new GitBranchTreeItem(element);
     }
     return new EnumTreeItem(element);
   }

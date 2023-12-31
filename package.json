@@ -261,6 +261,24 @@
                             "Tasks": true,
                             "Branches": true
                         }
+                    },
+                    "mani.hideBranches": {
+                        "title": "List of Branches to Hide in Tree Provider",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [
+                            "main",
+                            "master"
+                        ]
+                    },
+                    "mani.hideTags": {
+                        "title": "List of Tags to Hide in Tree Provider",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 }
             }

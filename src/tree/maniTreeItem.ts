@@ -1,5 +1,6 @@
 import { Command } from "vscode";
 
+import { GitBranch } from "../git";
 import { ManiConfig, ManiProject, ManiTask } from "../mani";
 
 export type EnumTreeItemType = {
@@ -50,5 +51,6 @@ export type ManiTreeItem =
   | ManiProject
   | ManiTask
   | ManiConfig
+  | GitBranch
   | string
   | EnumTreeItemType;

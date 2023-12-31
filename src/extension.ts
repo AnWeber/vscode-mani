@@ -13,6 +13,7 @@ import {
   RunTaskCommand,
   SetIconCommand,
 } from "./commands";
+import { GitStore } from "./git";
 import { initOutputChannel } from "./initOutputChannel";
 import { ManiStore } from "./mani";
 import { registerManiSchemas } from "./schemas";
@@ -22,6 +23,7 @@ export async function activate(
   context: vscode.ExtensionContext
 ): Promise<void> {
   const maniStore = new ManiStore();
+  const gitStore = new GitStore(maniStore);
 
   context.subscriptions.push(
     ...[
@@ -36,7 +38,7 @@ export async function activate(
       new OpenFolderCommand(maniStore),
       new OpenTerminalCommand(maniStore),
       new RunTaskCommand(maniStore),
-      new ProjectTreeDataProvider(maniStore),
+      new ProjectTreeDataProvider(maniStore, gitStore),
       new SetIconCommand(maniStore),
     ]
   );
