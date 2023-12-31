@@ -2,6 +2,7 @@ import { commands, Uri, workspace } from "vscode";
 
 import { getConfig } from "../utils";
 import { Project } from "./maniYaml";
+import { SpecialTags } from "./specialTags";
 
 export class ManiProject {
   public constructor(
@@ -21,6 +22,16 @@ export class ManiProject {
   }
   public get tags(): Array<string> {
     return this.raw.tags || [];
+  }
+
+  public get icon(): string {
+    const iconTag = this.tags.find((t) => t.startsWith(SpecialTags.ICON));
+
+    return iconTag?.slice(SpecialTags.ICON.length) || "repo";
+  }
+
+  public get isHidden(): boolean {
+    return this.tags.some((t) => t === SpecialTags.HIDDEN);
   }
 
   public openFolder(): void {

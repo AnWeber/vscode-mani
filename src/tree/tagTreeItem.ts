@@ -9,10 +9,5 @@ export class TagTreeItem extends vscode.TreeItem {
     this.contextValue = "tag";
 
     this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-    this.command = {
-      command: "mani.addTagToProjects",
-      arguments: [tag],
-      title: "tag projects",
-    };
   }
 }

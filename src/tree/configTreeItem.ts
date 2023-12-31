@@ -14,5 +14,8 @@ export class ConfigTreeItem extends vscode.TreeItem {
       arguments: [config],
       title: "edit",
     };
+    if (config.projects.length > 0) {
+      this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+    }
   }
 }

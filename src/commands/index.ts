@@ -5,6 +5,7 @@ export * from "./autoDiscoverCommand";
 export * from "./baseCommand";
 export * from "./editConfigCommand";
 export * from "./execCommand";
+export * from "./hideProjectCommand";
 export * from "./openFolderCommand";
 export * from "./openTerminalCommand";
 export * from "./runTaskCommand";

@@ -108,6 +108,12 @@
                 "shortTitle": "Terminal",
                 "category": "mani",
                 "icon": "$(terminal)"
+            },
+            {
+                "title": "Hide Project",
+                "command": "mani.hideProject",
+                "category": "mani",
+                "icon": "$(circle-slash)"
             }
         ],
         "viewsContainers": {
@@ -178,6 +184,10 @@
                     "when": "view == maniProjects && viewItem == project"
                 },
                 {
+                    "command": "mani.hideProject",
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
                     "command": "mani.addTags",
                     "when": "view == maniProjects && viewItem == project"
                 },
@@ -188,6 +198,11 @@
                 {
                     "command": "mani.exec",
                     "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.addTagToProjects",
+                    "when": "view == maniProjects && viewItem == tag",
+                    "group": "inline"
                 },
                 {
                     "command": "mani.addTagToProjects",

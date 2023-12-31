@@ -24,24 +24,43 @@ export class AddTagToProjectsCommand extends BaseCommand<string> {
     if (!config) {
       return;
     }
-    const projects = await vscode.window.showQuickPick(
-      config.getAllProjects().map((project) => ({
-        label: project.label,
-        project,
-        picked: project.tags.includes(tag),
-      })),
-      {
-        matchOnDetail: true,
-        matchOnDescription: true,
-        canPickMany: true,
-      }
-    );
+
+    const allProjects = config.getAllProjects();
+
+    const projectsWithTag = allProjects.filter((p) => p.tags.includes(tag));
+    const projects = (
+      await vscode.window.showQuickPick(
+        allProjects.map((project) => ({
+          label: project.label,
+          project,
+          picked: project.tags.includes(tag),
+        })),
+        {
+          matchOnDetail: true,
+          matchOnDescription: true,
+          canPickMany: true,
+        }
+      )
+    )?.map((p) => p.project);
     if (!projects) {
       return;
     }
 
     const configs: Array<ManiConfig> = [];
-    for (const p of projects.map((p) => p.project)) {
+
+    // remove existing tags
+    for (const p of projectsWithTag) {
+      if (!projects.includes(p)) {
+        p.raw.tags = p.tags.filter((t) => t !== tag);
+        const c = config.getConfigForProject(p);
+        if (c && !configs.includes(c)) {
+          configs.push(c);
+        }
+      }
+    }
+
+    // add new tags
+    for (const p of projects) {
       if (p.raw && !p.raw.tags?.includes(tag)) {
         p.raw.tags = [...p.tags, tag];
         const c = config.getConfigForProject(p);

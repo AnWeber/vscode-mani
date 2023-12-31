@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
 import { errorHandler } from "../decorators";
-import { ManiProject, ManiStore, SpecialTag } from "../mani";
+import { ManiProject, ManiStore, SpecialTags } from "../mani";
 import { writeTagsToYaml } from "./addTagsCommand";
 import { BaseCommand } from "./baseCommand";
 import { pickProject } from "./openFolderCommand";
@@ -16,7 +16,8 @@ export class SetIconCommand extends BaseCommand<ManiProject> {
     if (!config) {
       return;
     }
-    const project = p || (await pickProject(this.maniStore));
+    const project =
+      p instanceof ManiProject ? p : await pickProject(this.maniStore);
 
     if (!project) {
       return;
@@ -33,8 +34,8 @@ export class SetIconCommand extends BaseCommand<ManiProject> {
       }
     );
     if (icon) {
-      const tags = project.tags.filter((t) => !SpecialTag.ICON.startsWith(t));
-      tags.push(`${SpecialTag.ICON}${icon.icon}`);
+      const tags = project.tags.filter((t) => !SpecialTags.ICON.startsWith(t));
+      tags.push(`${SpecialTags.ICON}${icon.icon}`);
 
       await writeTagsToYaml(project, tags, config);
     }

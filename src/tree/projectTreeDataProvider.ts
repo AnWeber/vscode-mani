@@ -4,7 +4,7 @@ import { ManiConfig, ManiProject, ManiStore, ManiTask } from "../mani";
 import { getConfig } from "../utils";
 import { ConfigTreeItem } from "./configTreeItem";
 import { EnumTreeItem } from "./enumTreeItem";
-import { enumTreeItem,ManiTreeItem } from "./maniTreeItem";
+import { enumTreeItem, ManiTreeItem } from "./maniTreeItem";
 import { ProjectTreeItem } from "./projectTreeItem";
 import { TagTreeItem } from "./tagTreeItem";
 import { TaskTreeItem } from "./taskTreeItem";
@@ -64,6 +64,9 @@ export class ProjectTreeDataProvider
     }
     if (element === enumTreeItem.All) {
       return config.getAllProjects();
+    }
+    if (element instanceof ManiConfig) {
+      return element.projects;
     }
     if (typeof element === "string") {
       return config.getAllProjects().filter((p) => p.tags.includes(element));

@@ -3,10 +3,7 @@ import { Uri } from "vscode";
 import { ManiProject } from "./maniProject";
 import { ManiTask } from "./maniTask";
 import { ManiYaml } from "./maniYaml";
-
-export enum SpecialTag {
-  ICON = "icon:",
-}
+import { SpecialTags } from "./specialTags";
 
 export class ManiConfig {
   public readonly projects: Array<ManiProject>;
@@ -51,9 +48,9 @@ export class ManiConfig {
   }
 
   public getAllProjects(): Array<ManiProject> {
-    return this.getArray((config) => config.projects).sort((p1, p2) =>
-      p1.label.localeCompare(p2.label)
-    );
+    return this.getArray((config) => config.projects)
+      .filter((p) => !p.isHidden)
+      .sort((p1, p2) => p1.label.localeCompare(p2.label));
   }
   public getAllTasks(): Array<ManiTask> {
     return this.getArray((config) => config.tasks).sort((task1, task2) =>
@@ -62,7 +59,12 @@ export class ManiConfig {
   }
 
   public getAllTags(): Array<string> {
-    return this.getArray((config) => config.projects.map((p) => p.tags).flat())
+    return this.getArray((config) =>
+      config.projects
+        .filter((p) => !p.isHidden)
+        .map((p) => p.tags)
+        .flat()
+    )
       .filter((val, index, array) => array.indexOf(val) === index)
 
       .sort();
@@ -70,7 +72,7 @@ export class ManiConfig {
 
   public getAllUserTags(): Array<string> {
     return this.getAllTags().filter((tag) =>
-      Object.values(SpecialTag).every((st) => !tag.startsWith(st))
+      Object.values(SpecialTags).every((st) => !tag.startsWith(st))
     );
   }
 
