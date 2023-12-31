@@ -30,9 +30,13 @@ export class ProjectTreeDataProvider
         onDidChangeTreeDataEmitter.fire();
       }),
       vscode.workspace.onDidChangeConfiguration((e) => {
-        if (e.affectsConfiguration("mani.visibleTreeItemRoots")) {
+        if (e.affectsConfiguration("mani")) {
           onDidChangeTreeDataEmitter.fire();
         }
+      }),
+      vscode.commands.registerCommand("mani.refreshSidebar", () => {
+        this.maniStore.reset();
+        onDidChangeTreeDataEmitter.fire();
       }),
       vscode.window.registerTreeDataProvider("maniProjects", this),
     ];

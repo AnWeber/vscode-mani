@@ -42,11 +42,4 @@ export class ManiProject {
       getConfig().get("openProjectsInNewFolder")
     );
   }
-
-  public addToWorkspace(): void {
-    workspace.updateWorkspaceFolders(0, 0, {
-      name: this.label,
-      uri: this.uri,
-    });
-  }
 }

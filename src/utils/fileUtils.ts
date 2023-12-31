@@ -27,10 +27,6 @@ export function getCurrentFolder() {
   ) {
     return vscode.workspace.workspaceFolders[0].uri;
   }
-  const fileUri = vscode.window.activeTextEditor?.document?.uri;
-  if (fileUri) {
-    return vscode.Uri.joinPath(fileUri, "..");
-  }
   return undefined;
 }
 

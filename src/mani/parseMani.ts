@@ -1,6 +1,7 @@
 import { homedir } from "os";
 import { Uri } from "vscode";
 
+import { getConfig } from "../utils";
 import {
   getCurrentFolder,
   iterateDirectoryTree,
@@ -64,6 +65,10 @@ function getImportUri(path: string, fileUri: Uri) {
 }
 
 export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
+  const configFile = getConfig().get("maniConfigFile");
+  if (configFile) {
+    return getManiConfig(Uri.parse(configFile));
+  }
   const currentFolder = getCurrentFolder();
 
   const manifile = await iterateDirectoryTree(

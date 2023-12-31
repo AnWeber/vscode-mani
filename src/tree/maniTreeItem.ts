@@ -10,7 +10,7 @@ export type EnumTreeItemType = {
 };
 export const enumTreeItem = {
   Init: {
-    label: "Please Initialize Mani Config",
+    label: "No mani.yml found. Please use `mani.init`?",
     icon: "new-file",
     command: {
       command: "mani.init",

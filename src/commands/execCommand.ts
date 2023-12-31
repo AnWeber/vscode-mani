@@ -1,12 +1,13 @@
 import * as vscode from "vscode";
 
 import { errorHandler } from "../decorators";
+import { GitBranch } from "../git";
 import { ManiConfig, ManiProject, ManiStore } from "../mani";
 import { enumTreeItem } from "../tree";
 import { createTerminal } from "../utils";
 import { BaseCommand } from "./baseCommand";
 
-export type ManiArgs = ManiProject | string;
+export type ManiArgs = ManiProject | string | GitBranch;
 
 export class ExecCommand extends BaseCommand<ManiArgs> {
   public constructor(private readonly maniStore: ManiStore) {
@@ -58,7 +59,9 @@ export async function pickArgs(config: ManiConfig, param?: ManiArgs) {
       label: p.name,
       args: `--projects`,
       value: p.name,
-      picked: param === p,
+      picked:
+        param === p ||
+        (param instanceof GitBranch && param.projects.includes(p)),
     })),
   ];
 
