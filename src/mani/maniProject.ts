@@ -1,4 +1,4 @@
-import { commands, Uri, workspace } from "vscode";
+import { commands, Uri } from "vscode";
 
 import { getConfig } from "../utils";
 import { Project } from "./maniYaml";
