@@ -13,11 +13,9 @@ export class ManiProject {
   ) {}
 
   public get label(): string {
-    return this.name;
+    return `$(${this.icon}) ${this.name}`;
   }
-  public get description(): string | undefined {
-    return this.raw.desc || this.raw.tags?.join(", ");
-  }
+
   public get detail(): string | undefined {
     return this.raw.path;
   }

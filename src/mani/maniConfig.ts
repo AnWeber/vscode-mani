@@ -50,7 +50,7 @@ export class ManiConfig {
   public getAllProjects(): Array<ManiProject> {
     return this.getArray((config) => config.projects)
       .filter((p) => !p.isHidden)
-      .sort((p1, p2) => p1.label.localeCompare(p2.label));
+      .sort((p1, p2) => p1.name.localeCompare(p2.name));
   }
   public getAllTasks(): Array<ManiTask> {
     return this.getArray((config) => config.tasks).sort((task1, task2) =>

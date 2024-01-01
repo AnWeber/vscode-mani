@@ -4,7 +4,7 @@ import { ManiProject } from "../mani";
 
 export class ProjectTreeItem extends vscode.TreeItem {
   constructor(project: ManiProject) {
-    super(project.label);
+    super(project.name);
     this.contextValue = "project";
     this.iconPath = new vscode.ThemeIcon(project.icon);
 
