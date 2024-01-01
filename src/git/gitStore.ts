@@ -10,12 +10,13 @@ export class GitStore {
 
   public async getBranches(): Promise<Array<GitBranch>> {
     const branches: Array<GitBranch> = [];
-    try {
-      const config = await this.maniStore.getManiConfig();
-      if (!config) {
-        return [];
-      }
-      for (const p of config.getAllProjects().filter((p) => !!p.raw.url)) {
+
+    const config = await this.maniStore.getManiConfig();
+    if (!config) {
+      return [];
+    }
+    for (const p of config.getAllProjects().filter((p) => !!p.raw.url)) {
+      try {
         const gitInfo = await this.getGitBranchesForUri(p.uri);
 
         for (const branch of gitInfo.branches) {
@@ -29,10 +30,11 @@ export class GitStore {
           }
           gitBranch.projects.push(p);
         }
+      } catch (err) {
+        logError("error while resolving git branches", err);
       }
-    } catch (err) {
-      logError("error while resolving git branches", err);
     }
+
     return branches;
   }
 
