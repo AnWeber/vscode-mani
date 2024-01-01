@@ -15,7 +15,7 @@ export class GitStore {
       if (!config) {
         return [];
       }
-      for (const p of config.getAllProjects()) {
+      for (const p of config.getAllProjects().filter((p) => !!p.raw.url)) {
         const gitInfo = await this.getGitBranchesForUri(p.uri);
 
         for (const branch of gitInfo.branches) {
