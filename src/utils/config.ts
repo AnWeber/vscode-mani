@@ -6,6 +6,7 @@ export function getConfig(): ManiConfiguration {
 
 export interface ManiConfiguration {
   get(section: "maniConfigFile"): string;
+  get(section: "jiraUrl"): string;
   get(section: "openProjectsInNewFolder"): boolean;
   get(section: "branchView.hiddenByName"): Array<string> | undefined;
   get(section: "branchView.hiddenByTag"): Array<string> | undefined;

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# [unreleased]
+
+# Features
+- add open JIRA Website based on Branch Name
+
 # [1.0.0] (01.01.2024)
 
 # Features

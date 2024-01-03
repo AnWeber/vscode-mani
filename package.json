@@ -120,6 +120,12 @@
                 "command": "mani.refreshSidebar",
                 "category": "mani",
                 "icon": "$(refresh)"
+            },
+            {
+                "title": "Open Jira",
+                "command": "mani.openJira",
+                "category": "mani",
+                "icon": "$(issues)"
             }
         ],
         "viewsContainers": {
@@ -148,6 +154,12 @@
             }
         ],
         "menus": {
+            "commandPalette": [
+                {
+                    "command": "mani.openJira",
+                    "when": "false"
+                }
+            ],
             "view/title": [
                 {
                     "command": "mani.refreshSidebar",
@@ -239,6 +251,10 @@
                 {
                     "command": "mani.exec",
                     "when": "view == maniProjects && viewItem == branch"
+                },
+                {
+                    "command": "mani.openJira",
+                    "when": "view == maniProjects && viewItem == branch && config.mani.jiraUrl"
                 }
             ]
         },
@@ -250,6 +266,11 @@
                         "title": "Mani Root Config File",
                         "type": "string",
                         "description": "force using a mani yaml"
+                    },
+                    "mani.jiraUrl": {
+                        "title": "Jira URL",
+                        "type": "string",
+                        "description": "Jira URL used to open issue, if Branch contains Issue number"
                     },
                     "mani.openProjectsInNewFolder": {
                         "type": "boolean",
