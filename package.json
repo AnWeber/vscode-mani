@@ -126,6 +126,12 @@
                 "command": "mani.openJira",
                 "category": "mani",
                 "icon": "$(issues)"
+            },
+            {
+                "title": "Open Git",
+                "command": "mani.openGit",
+                "category": "mani",
+                "icon": "$(home)"
             }
         ],
         "viewsContainers": {
@@ -220,6 +226,10 @@
                 },
                 {
                     "command": "mani.exec",
+                    "when": "view == maniProjects && viewItem == project"
+                },
+                {
+                    "command": "mani.openGit",
                     "when": "view == maniProjects && viewItem == project"
                 },
                 {

@@ -3,7 +3,8 @@
 # [unreleased]
 
 # Features
-- add open JIRA Website based on Branch Name
+- add `Open Jira` Command based on Branch Name
+- add `Open Git` Command
 
 # [1.0.0] (01.01.2024)
 

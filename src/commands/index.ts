@@ -1,5 +1,5 @@
-export * from "./addTagToProjectsCommand";
 export * from "./addTagsCommand";
+export * from "./addTagToProjectsCommand";
 export * from "./addWorkspaceFolderCommand";
 export * from "./autoDiscoverCommand";
 export * from "./baseCommand";
@@ -7,6 +7,7 @@ export * from "./editConfigCommand";
 export * from "./execCommand";
 export * from "./hideProjectCommand";
 export * from "./openFolderCommand";
+export * from "./openGitCommand";
 export * from "./openJiraCommand.ts";
 export * from "./openTerminalCommand";
 export * from "./runTaskCommand";
