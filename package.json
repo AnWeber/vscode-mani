@@ -229,7 +229,7 @@
                 },
                 {
                     "command": "mani.addWorkspaceFolder",
-                    "when": "view == maniProjects && viewItem == project",
+                    "when": "view == maniProjects && viewItem == branch",
                     "group": "inline"
                 },
                 {
@@ -295,23 +295,29 @@
                             "Branches": true
                         }
                     },
-                    "mani.hideBranches": {
+                    "mani.branchView.hiddenByName": {
                         "title": "List of Branches to Hide in Tree Provider",
                         "type": "array",
                         "items": {
                             "type": "string"
                         },
-                        "default": [
-                            "main",
-                            "master"
-                        ]
+                        "default": []
                     },
-                    "mani.hideTags": {
+                    "mani.branchView.hiddenByTag": {
+                        "title": "Hide Branches of Projects by Tag",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": []
+                    },
+                    "mani.tagView.hiddenByName": {
                         "title": "List of Tags to Hide in Tree Provider",
                         "type": "array",
                         "items": {
                             "type": "string"
-                        }
+                        },
+                        "default": []
                     }
                 }
             }

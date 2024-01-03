@@ -3,7 +3,7 @@ import { Uri } from "vscode";
 
 import { logError } from "../initOutputChannel";
 import { ManiStore } from "../mani";
-import { runShell } from "../utils";
+import { getConfig, runShell } from "../utils";
 import { GitBranch } from "./gitBranch";
 export class GitStore {
   public constructor(private readonly maniStore: ManiStore) {}
@@ -15,7 +15,11 @@ export class GitStore {
     if (!config) {
       return [];
     }
+    const tags = getConfig().get("branchView.hiddenByTag") || [];
     for (const p of config.getAllProjects().filter((p) => !!p.raw.url)) {
+      if (p.tags.some((t) => tags.includes(t))) {
+        continue;
+      }
       try {
         const gitInfo = await this.getGitBranchesForUri(p.uri);
 

@@ -62,7 +62,7 @@ export class ProjectTreeDataProvider
       return [config, ...(config?.imports || [])];
     }
     if (element === enumTreeItem.Tags) {
-      const hideTags = getConfig().get("hideTags");
+      const hideTags = getConfig().get("tagView.hiddenByName");
       const tags: Array<ManiTreeItem> = config
         .getAllUserTags()
         .filter((t) => !hideTags?.includes(t));
@@ -79,7 +79,7 @@ export class ProjectTreeDataProvider
     }
     if (element === enumTreeItem.Branches) {
       const branches = await this.gitStore.getBranches();
-      const hideBranches = getConfig().get("hideBranches");
+      const hideBranches = getConfig().get("branchView.hiddenByName");
       return branches.filter((b) => !hideBranches?.includes(b.name));
     }
     if (element instanceof GitBranch) {
