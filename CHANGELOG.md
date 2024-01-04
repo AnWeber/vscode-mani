@@ -1,10 +1,11 @@
 # CHANGELOG
 
-# [unreleased]
+# [1.1.0] (04.01.2024)
 
 # Features
 - add `Open Jira` Command based on Branch Name
 - add `Open Git` Command
+- use vscode LogOutputChannel
 
 # [1.0.0] (01.01.2024)
 
