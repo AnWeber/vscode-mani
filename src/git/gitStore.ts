@@ -1,7 +1,7 @@
 import { EOL } from "os";
 import { Uri } from "vscode";
 
-import { logError } from "../initOutputChannel";
+import { logger } from "../initOutputChannel";
 import { ManiStore } from "../mani";
 import { getConfig, runShell } from "../utils";
 import { GitBranch } from "./gitBranch";
@@ -35,7 +35,7 @@ export class GitStore {
           gitBranch.projects.push(p);
         }
       } catch (err) {
-        logError("error while resolving git branches", err);
+        logger.error("error while resolving git branches", err);
       }
     }
 

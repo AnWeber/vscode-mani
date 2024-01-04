@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import { logError } from "../initOutputChannel";
+import { logger } from "../initOutputChannel";
 import { ManiConfigFiles } from "../mani";
 import schema from "./mani-schemas.json";
 
@@ -21,8 +21,7 @@ export async function registerManiSchemas(): Promise<void> {
       onRequestSchemaContent
     );
   } catch (err) {
-    logError("yaml Registration did throw");
-    logError(err);
+    logger.error("yaml Registration did throw", err);
   }
 }
 function onRequestSchemaURI(resource: string): string | undefined {

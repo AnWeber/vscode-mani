@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 import { errorHandler } from "../decorators";
 import { GitBranch } from "../git";
-import { logInfo } from "../initOutputChannel";
+import { logger } from "../initOutputChannel";
 import { getConfig } from "../utils";
 import { BaseCommand } from "./baseCommand";
 
@@ -27,7 +27,7 @@ export class OpenJiraCommand extends BaseCommand<GitBranch> {
       return;
     }
     const url = `${jiraUrl}/browse/${match[1]}`;
-    logInfo(`open url ${url}`);
+    logger.info(`open url ${url}`);
     vscode.env.openExternal(vscode.Uri.parse(url));
   }
 }

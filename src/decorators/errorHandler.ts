@@ -1,4 +1,4 @@
-import { logError } from "../initOutputChannel";
+import { logger } from "../initOutputChannel";
 
 export function errorHandler(this: unknown): MethodDecorator {
   return (
@@ -10,7 +10,7 @@ export function errorHandler(this: unknown): MethodDecorator {
 
     descriptor.value = errorHandlerWrapper.bind(this)(
       target,
-      propertyKey,
+      propertyKey.toString(),
       originalMethod
     );
     return descriptor;
@@ -19,7 +19,7 @@ export function errorHandler(this: unknown): MethodDecorator {
 
 export function errorHandlerWrapper(
   target: unknown,
-  propertyKey: string | symbol,
+  propertyKey: string,
   method: (...args: unknown[]) => unknown
 ) {
   return function (this: unknown, ...args: unknown[]): unknown {
@@ -36,12 +36,8 @@ export function errorHandlerWrapper(
   };
 }
 
-async function handleError(
-  _target: unknown,
-  _propertyKey: string | symbol,
-  err: unknown
-) {
-  logError(err);
+async function handleError(target: unknown, propertyKey: string, err: unknown) {
+  logger.error(`error in ${target}.${propertyKey}:`, err);
 }
 export function isPromise(obj: unknown): obj is Promise<unknown> {
   const guard = obj as Promise<unknown>;

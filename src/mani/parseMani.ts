@@ -1,6 +1,7 @@
 import { homedir } from "os";
 import { Uri } from "vscode";
 
+import { logger } from "../initOutputChannel";
 import { getConfig } from "../utils";
 import {
   getCurrentFolder,
@@ -67,6 +68,7 @@ function getImportUri(path: string, fileUri: Uri) {
 export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
   const configFile = getConfig().get("maniConfigFile");
   if (configFile) {
+    logger.info(`use configured mani file`, configFile);
     return getManiConfig(Uri.parse(configFile));
   }
   const currentFolder = getCurrentFolder();
@@ -76,7 +78,9 @@ export async function getRootManiConfig(): Promise<ManiConfig | undefined> {
     ...ManiConfigFiles
   );
   if (manifile) {
+    logger.info(`mani Config Uri`, manifile);
     return getManiConfig(manifile);
   }
+  logger.info(`No Mani Config found for folder`, currentFolder);
   return undefined;
 }

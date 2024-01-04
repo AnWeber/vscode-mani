@@ -2,7 +2,7 @@ import { basename } from "path";
 import * as vscode from "vscode";
 
 import { errorHandler } from "../decorators";
-import { logInfo } from "../initOutputChannel";
+import { logger } from "../initOutputChannel";
 import { ManiStore, ManiYaml, Project } from "../mani";
 import { equalsPath, writeYaml } from "../utils";
 import { runShell } from "../utils";
@@ -103,7 +103,7 @@ export class AutoDiscoverCommand extends BaseCommand {
             cwd: uri.fsPath,
           });
         } catch (err) {
-          logInfo(`${uri.fsPath} has no remote`);
+          logger.error(`${uri.fsPath} has no remote`, err);
         }
         projects.push(project);
       }
