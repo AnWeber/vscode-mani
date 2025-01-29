@@ -1,7 +1,7 @@
 {
     "name": "mani",
     "publisher": "anweber",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "description": "manage projects using mani",
     "displayName": "mani - Project Manager",
     "main": "dist/extension.js",
@@ -364,19 +364,19 @@
         "lint": "npm run tsc && npm run lockfile-lint && npm run eslint"
     },
     "devDependencies": {
-        "@types/node": "^20.10.6",
+        "@types/node": "^22.12.0",
         "@types/vscode": "1.75.0",
-        "@typescript-eslint/eslint-plugin": "^6.16.0",
-        "@typescript-eslint/parser": "^6.16.0",
-        "esbuild": "^0.19.11",
-        "eslint": "^8.56.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-simple-import-sort": "^10.0.0",
-        "lockfile-lint": "^4.12.1",
-        "typescript": "^5.3.3"
+        "@typescript-eslint/eslint-plugin": "^7.18.0",
+        "@typescript-eslint/parser": "^7.18.0",
+        "esbuild": "^0.19.12",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "lockfile-lint": "^4.14.0",
+        "typescript": "^5.7.3"
     },
     "dependencies": {
-        "yaml": "^2.3.4"
+        "yaml": "^2.7.0"
     },
     "volta": {
         "node": "20.10.0"

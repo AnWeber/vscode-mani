@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# [2.0.0] (29.01.2024)
+
+# Features
+- add breaking changes for mani@0.30.0
+
 # [1.1.0] (04.01.2024)
 
 # Features

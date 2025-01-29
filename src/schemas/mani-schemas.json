@@ -128,7 +128,7 @@
           "description": "The preferred output format for a task",
           "type": "string",
           "enum": [
-            "text",
+            "stream",
             "table",
             "html",
             "markdown"
